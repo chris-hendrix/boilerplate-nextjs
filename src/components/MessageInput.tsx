@@ -2,21 +2,17 @@ import { useState } from 'react'
 import { IconButton, TextField } from '@mui/material'
 import { Send } from '@mui/icons-material'
 
+import { useAddMessageMutation } from '@/services/message'
+
 const MessageInput = ({ ...rest }) => {
   const [content, setContent] = useState<string>('')
+  const [addMessage, { isLoading }] = useAddMessageMutation()
 
   const sendMessage = async () => {
-    try {
-      await fetch('/api/message', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ content }),
-      })
-      setContent('')
-    } catch (error) {
-      console.error(error)
-    }
+    await addMessage({ content })
+    setContent('')
   }
+
   return (
     <TextField
       fullWidth
@@ -36,7 +32,7 @@ const MessageInput = ({ ...rest }) => {
               e.preventDefault()
               sendMessage()
             }}
-            disabled={Boolean(content.length === 0)} >
+            disabled={Boolean(content.length === 0) || isLoading} >
             <Send />
           </IconButton>
       }}

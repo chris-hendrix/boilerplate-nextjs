@@ -5,6 +5,8 @@ module.exports = {
   },
   extends: [
     'next/core-web-vitals',
+    'eslint:recommended',
+    'plugin:@typescript-eslint/recommended',
     'plugin:react/recommended',
     'airbnb-base',
     'airbnb-typescript',
@@ -31,9 +33,8 @@ module.exports = {
     '@typescript-eslint/semi': ['error', 'never'], // forces no semicolon
     '@typescript-eslint/no-unused-expressions': 'off', // allows true && runFunction()
     'jsx-quotes': ['error', 'prefer-double'], // force double quotes for jsx props
-    // 'no-trailing-spaces': 'error',
     'object-curly-newline': 'off', // allows objects on one line
-    'react/prop-types': 'off',
-    'react/react-in-jsx-scope': 'off',
+    'react/prop-types': 'off', // no need for propTypes in typescript
+    'react/react-in-jsx-scope': 'off', // no need to import React in jsx files
   }
 };
