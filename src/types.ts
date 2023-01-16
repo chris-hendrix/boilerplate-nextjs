@@ -1,10 +1,8 @@
-export type Post = {
+export type Message = {
   id: string;
-  title: string;
-  author: {
+  user: {
     name: string;
     email: string;
   } | null;
   content: string;
-  published: boolean;
 }

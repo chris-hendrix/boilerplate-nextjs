@@ -6,20 +6,16 @@ type Props = {
 }
 
 const Layout: React.FC<Props> = ({ children }) => (
-  <Box>
-    <AppBar position="static" sx={{ mb: 2 }}>
+  <Box height="99vh" display="flex" flexDirection="column">
+    <AppBar position="static">
       <Toolbar>
         <Typography variant="h6" sx={{ flexGrow: 1 }}>
-          Blog
+          Message Board
         </Typography>
         <Button color="inherit">Login</Button>
       </Toolbar>
     </AppBar>
-    <Box
-      className="App"
-      typography="body1"
-      sx={{ display: 'flex', justifyContent: 'center', height: '100vh' }}
-    >
+    <Box className="content" display="flex" height="100%" flex={1} p={6} >
       {children}
     </Box>
   </Box>

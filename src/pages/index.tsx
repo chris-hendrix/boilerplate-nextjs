@@ -1,45 +1,43 @@
 import { GetStaticProps } from 'next'
 import Head from 'next/head'
 
-import { Post } from '@/types'
+import { Box, Paper } from '@mui/material'
+import { Message } from '@/types'
 
 import Layout from '@/components/Layout'
-import PostList from '@/components/PostList'
+import MessageList from '@/components/MessageList'
+import MessageInput from '@/components/MessageInput'
 
 export const getStaticProps: GetStaticProps = async () => {
-  const posts = [
+  const messages = [
     {
       id: '1',
-      title: 'Hello world!',
       content: 'Hello world do you exist?',
-      published: true,
-      author: {
+      user: {
         name: 'Chris ',
         email: 'chendrix1123@gmail.com',
       },
     },
     {
       id: '2',
-      title: 'Prisma is the perfect ORM for Next.js',
       content: '[Prisma](https://github.com/prisma/prisma) and Next.js go _great_ together!',
-      published: true,
-      author: {
+      user: {
         name: 'Nikolas Burk',
         email: 'burk@prisma.io',
       },
     }
   ]
   return {
-    props: { posts },
+    props: { messages },
     revalidate: 10
   }
 }
 
 type Props = {
-  posts: Post[]
+  messages: Message[]
 }
 
-const Home: React.FC<Props> = ({ posts }) => (
+const Home: React.FC<Props> = ({ messages }) => (
     <>
       <Head>
         <title>Create Next App</title>
@@ -49,7 +47,13 @@ const Home: React.FC<Props> = ({ posts }) => (
       </Head>
     <main>
       <Layout>
-        <PostList posts={posts} />
+        <Box display="flex" width="100%" justifyContent="center">
+          <Paper sx={{ display: 'flex', height: '100%', width: '80%', flexDirection: 'column', p: 2 }}>
+            <MessageList messages={messages} />
+            <Box display="flex" flexGrow={1} justifyContent="flex-end" />
+            <MessageInput />
+          </Paper>
+        </Box>
       </Layout>
       </main>
     </>
