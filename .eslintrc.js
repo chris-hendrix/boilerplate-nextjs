@@ -13,9 +13,6 @@ module.exports = {
     '**/*.js',
     'node_modules/*'
   ],
-  globals: {
-    prisma: true
-  },
   parser: '@typescript-eslint/parser',
   parserOptions: {
     ecmaFeatures: {
@@ -30,11 +27,12 @@ module.exports = {
     '@typescript-eslint',
   ],
   rules: {
-    '@typescript-eslint/comma-dangle': 'off',
-    '@typescript-eslint/semi': ['error', 'never'],
-    'jsx-quotes': ['error', 'prefer-double'],
-    'no-trailing-spaces': 'error',
-    'object-curly-newline': 'off',
+    '@typescript-eslint/comma-dangle': 'off', // allows no comma dangle
+    '@typescript-eslint/semi': ['error', 'never'], // forces no semicolon
+    '@typescript-eslint/no-unused-expressions': 'off', // allows true && runFunction()
+    'jsx-quotes': ['error', 'prefer-double'], // force double quotes for jsx props
+    // 'no-trailing-spaces': 'error',
+    'object-curly-newline': 'off', // allows objects on one line
     'react/prop-types': 'off',
     'react/react-in-jsx-scope': 'off',
   }

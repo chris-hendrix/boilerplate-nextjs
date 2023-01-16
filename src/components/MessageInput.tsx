@@ -3,18 +3,40 @@ import { IconButton, TextField } from '@mui/material'
 import { Send } from '@mui/icons-material'
 
 const MessageInput = ({ ...rest }) => {
-  const [message, setMessage] = useState<string>('')
+  const [content, setContent] = useState<string>('')
+
+  const sendMessage = async () => {
+    try {
+      await fetch('/api/message', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ content }),
+      })
+      setContent('')
+    } catch (error) {
+      console.error(error)
+    }
+  }
   return (
     <TextField
       fullWidth
-      value={message}
+      value={content}
       placeholder="Enter message"
-      onChange={(e) => setMessage(e.target.value)}
+      onChange={(e) => setContent(e.target.value)}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter') {
+          e.preventDefault()
+          sendMessage()
+        }
+      }}
       InputProps={{
         endAdornment:
           <IconButton
-            onClick={() => console.log(message)}
-            disabled={Boolean(message.length === 0)} >
+            onClick={(e) => {
+              e.preventDefault()
+              sendMessage()
+            }}
+            disabled={Boolean(content.length === 0)} >
             <Send />
           </IconButton>
       }}

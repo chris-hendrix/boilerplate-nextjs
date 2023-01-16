@@ -1,8 +1,7 @@
-export type Message = {
-  id: string;
-  user: {
-    name: string;
-    email: string;
-  } | null;
-  content: string;
-}
+import { Prisma } from '@prisma/client'
+
+export type Message = Prisma.MessageGetPayload<{
+  include: { user: true }
+}>
+
+export type ResponseError = { message: string, code: number }

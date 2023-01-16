@@ -3,30 +3,16 @@ import Head from 'next/head'
 
 import { Box, Paper } from '@mui/material'
 import { Message } from '@/types'
+import prisma from '@/lib/prisma'
 
 import Layout from '@/components/Layout'
 import MessageList from '@/components/MessageList'
 import MessageInput from '@/components/MessageInput'
 
 export const getStaticProps: GetStaticProps = async () => {
-  const messages = [
-    {
-      id: '1',
-      content: 'Hello world do you exist?',
-      user: {
-        name: 'Chris ',
-        email: 'chendrix1123@gmail.com',
-      },
-    },
-    {
-      id: '2',
-      content: '[Prisma](https://github.com/prisma/prisma) and Next.js go _great_ together!',
-      user: {
-        name: 'Nikolas Burk',
-        email: 'burk@prisma.io',
-      },
-    }
-  ]
+  const messages = await prisma?.message.findMany({
+    include: { user: { select: { name: true } } }
+  })
   return {
     props: { messages },
     revalidate: 10
