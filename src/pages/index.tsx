@@ -1,43 +1,12 @@
-import { GetStaticProps } from 'next'
 import Head from 'next/head'
 
 import { Box, Paper } from '@mui/material'
-import { Message } from '@/types'
 
 import Layout from '@/components/Layout'
 import MessageList from '@/components/MessageList'
 import MessageInput from '@/components/MessageInput'
 
-export const getStaticProps: GetStaticProps = async () => {
-  const messages = [
-    {
-      id: '1',
-      content: 'Hello world do you exist?',
-      user: {
-        name: 'Chris ',
-        email: 'chendrix1123@gmail.com',
-      },
-    },
-    {
-      id: '2',
-      content: '[Prisma](https://github.com/prisma/prisma) and Next.js go _great_ together!',
-      user: {
-        name: 'Nikolas Burk',
-        email: 'burk@prisma.io',
-      },
-    }
-  ]
-  return {
-    props: { messages },
-    revalidate: 10
-  }
-}
-
-type Props = {
-  messages: Message[]
-}
-
-const Home: React.FC<Props> = ({ messages }) => (
+const Home: React.FC = () => (
     <>
       <Head>
         <title>Create Next App</title>
@@ -49,7 +18,7 @@ const Home: React.FC<Props> = ({ messages }) => (
       <Layout>
         <Box display="flex" width="100%" justifyContent="center">
           <Paper sx={{ display: 'flex', height: '100%', width: '80%', flexDirection: 'column', p: 2 }}>
-            <MessageList messages={messages} />
+            <MessageList />
             <Box display="flex" flexGrow={1} justifyContent="flex-end" />
             <MessageInput />
           </Paper>

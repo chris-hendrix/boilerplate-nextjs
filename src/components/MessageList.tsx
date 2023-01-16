@@ -1,11 +1,11 @@
 import { Avatar, Box, Chip } from '@mui/material'
-import { Message } from '@/types'
+import { useGetMessagesQuery } from '@/services/message'
 
-type Props = {
-  messages: Message[]
-}
+const MessageList: React.FC = ({ ...rest }) => {
+  const { data: messages, isLoading } = useGetMessagesQuery()
 
-const MessageList: React.FC<Props> = ({ messages, ...rest }) => (
+  if (isLoading || !messages) return null
+  return (
   <Box display="flex" flexDirection="column" {...rest}>
     {messages.map((message) => (
       <Box key={message.id} mb={2}>
@@ -16,6 +16,7 @@ const MessageList: React.FC<Props> = ({ messages, ...rest }) => (
       </Box>
     ))}
   </Box>
-)
+  )
+}
 
 export default MessageList

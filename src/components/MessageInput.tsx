@@ -2,19 +2,37 @@ import { useState } from 'react'
 import { IconButton, TextField } from '@mui/material'
 import { Send } from '@mui/icons-material'
 
+import { useAddMessageMutation } from '@/services/message'
+
 const MessageInput = ({ ...rest }) => {
-  const [message, setMessage] = useState<string>('')
+  const [content, setContent] = useState<string>('')
+  const [addMessage, { isLoading }] = useAddMessageMutation()
+
+  const sendMessage = async () => {
+    await addMessage({ content })
+    setContent('')
+  }
+
   return (
     <TextField
       fullWidth
-      value={message}
+      value={content}
       placeholder="Enter message"
-      onChange={(e) => setMessage(e.target.value)}
+      onChange={(e) => setContent(e.target.value)}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter') {
+          e.preventDefault()
+          sendMessage()
+        }
+      }}
       InputProps={{
         endAdornment:
           <IconButton
-            onClick={() => console.log(message)}
-            disabled={Boolean(message.length === 0)} >
+            onClick={(e) => {
+              e.preventDefault()
+              sendMessage()
+            }}
+            disabled={Boolean(content.length === 0) || isLoading} >
             <Send />
           </IconButton>
       }}
