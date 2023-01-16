@@ -26,8 +26,10 @@ module.exports = {
   rules: {
     '@typescript-eslint/comma-dangle': 'off',
     '@typescript-eslint/semi': ['error', 'never'],
+    'jsx-quotes': ['error', 'prefer-double'],
     'no-trailing-spaces': 'error',
     'object-curly-newline': 'off',
+    'react/prop-types': 'off',
     'react/react-in-jsx-scope': 'off',
   }
 };
