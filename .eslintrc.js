@@ -9,7 +9,13 @@ module.exports = {
     'airbnb-base',
     'airbnb-typescript',
   ],
-  ignorePatterns: ['**/*.js', 'node_modules/*'],
+  ignorePatterns: [
+    '**/*.js',
+    'node_modules/*'
+  ],
+  globals: {
+    prisma: true
+  },
   parser: '@typescript-eslint/parser',
   parserOptions: {
     ecmaFeatures: {
