@@ -22,7 +22,7 @@ module.exports = {
     },
     ecmaVersion: 'latest',
     sourceType: 'module',
-    project: "./tsconfig.json"
+    project: './tsconfig.json'
   },
   plugins: [
     'react',
@@ -32,6 +32,10 @@ module.exports = {
     '@typescript-eslint/comma-dangle': 'off', // allows no comma dangle
     '@typescript-eslint/semi': ['error', 'never'], // forces no semicolon
     '@typescript-eslint/no-unused-expressions': 'off', // allows true && runFunction()
+    '@typescript-eslint/no-unused-vars': [ // allows unused vars with explicit underscore
+      'error',
+      { 'argsIgnorePattern': '^_', 'varsIgnorePattern': '^_', 'caughtErrorsIgnorePattern': '^_' },
+    ],
     'jsx-quotes': ['error', 'prefer-double'], // force double quotes for jsx props
     'object-curly-newline': 'off', // allows objects on one line
     'react/prop-types': 'off', // no need for propTypes in typescript
