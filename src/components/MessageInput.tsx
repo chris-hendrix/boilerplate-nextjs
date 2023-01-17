@@ -22,6 +22,7 @@ const MessageInput = ({ ...rest }) => {
       <UserAvatar user={session?.user} />
       <TextField
         fullWidth
+        disabled={!session}
         value={content}
         placeholder="Enter message"
         onChange={(e) => setContent(e.target.value)}
