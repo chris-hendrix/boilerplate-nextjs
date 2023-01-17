@@ -1,6 +1,7 @@
 import { ReactNode } from 'react'
 import { signOut, useSession } from 'next-auth/react'
-import { AppBar, Avatar, Box, Button, IconButton, Toolbar, Typography } from '@mui/material'
+import { AppBar, Box, Button, IconButton, Toolbar, Typography } from '@mui/material'
+import UserAvatar from './UserAvatar'
 
 type Props = {
   children: ReactNode;
@@ -12,12 +13,11 @@ const Layout: React.FC<Props> = ({ children }) => {
   const renderSessionButtons = () => {
     if (status === 'loading') return null
     if (!session?.user) return <Button href="/api/auth/signin" color="inherit">Login</Button>
-    const { user: { name, image } } = session
 
     return (
       <>
         <IconButton>
-          {image ? <Avatar src={image} /> : <Avatar>{name?.charAt(0) || ''}</Avatar>}
+          <UserAvatar user={session?.user} />
         </IconButton>
         <Button onClick={() => signOut()} color="inherit">Logout</Button>
       </>
