@@ -1,10 +1,9 @@
-import { NextApiHandler } from 'next'
-import NextAuth from 'next-auth'
+import NextAuth, { NextAuthOptions } from 'next-auth'
 import { PrismaAdapter } from '@next-auth/prisma-adapter'
 import GoogleProvider from 'next-auth/providers/google'
 import prisma from '@/lib/prisma'
 
-const options = {
+const options: NextAuthOptions = {
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID || '',
@@ -13,7 +12,13 @@ const options = {
   ],
   adapter: PrismaAdapter(prisma),
   secret: process.env.SECRET,
+  callbacks: {
+    async session({ session, user }) {
+      // eslint-disable-next-line no-param-reassign
+      session.user = await prisma.user.findUnique({ where: { id: user.id } })
+      return session
+    }
+  }
 }
 
-const authHandler: NextApiHandler = (req, res) => NextAuth(req, res, options)
-export default authHandler
+export default NextAuth(options)
