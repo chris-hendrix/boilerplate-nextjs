@@ -1,4 +1,3 @@
-import { getSession } from 'next-auth/react'
 import prisma from '@/lib/prisma'
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { Message } from '@/types'
@@ -9,12 +8,11 @@ export default async function handle(
 ) {
   let result = null
   if (req.method === 'POST') {
-    const { content } = req.body
-    const session = await getSession({ req })
+    const { content, user } = req.body
     result = await prisma.message.create({
       data: {
         content,
-        user: { connect: { email: session?.user?.email || '' } },
+        user: { connect: { id: user.id } },
       },
       include: { user: true }
     })

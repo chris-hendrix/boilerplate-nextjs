@@ -13,7 +13,7 @@ const MessageInput = ({ ...rest }) => {
   const { data: session } = useSession()
 
   const sendMessage = async () => {
-    await addMessage({ content })
+    await addMessage({ content, user: session?.user })
     setContent('')
   }
 

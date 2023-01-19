@@ -18,6 +18,7 @@
       "@/*": ["./src/*"]
     }
   },
+  "baseUrl" : "src",
   "paths": {
     "@components": ["components"],
     "@lib": ["lib"],
