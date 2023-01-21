@@ -1,9 +1,11 @@
 /* eslint-disable no-underscore-dangle */
 import { createMocks } from 'node-mocks-http'
 import prisma from '@/lib/prisma'
-import handle from '.'
+import handle from '@/pages/api/message'
 
 describe('/api/message', () => {
+  beforeAll(async () => prisma.message.deleteMany())
+
   test('create message', async () => {
     const userData = { name: 'tester', email: 'tester@email.com' }
     const user = await prisma.user.findUnique({ where: { email: userData.email } })
@@ -31,6 +33,6 @@ describe('/api/message', () => {
     })
     await handle(req, res)
     expect(res._getStatusCode()).toBe(200)
-    expect(JSON.parse(res._getData()).length()).toEqual(1)
+    expect(JSON.parse(res._getData()).length).toEqual(1)
   })
 })
