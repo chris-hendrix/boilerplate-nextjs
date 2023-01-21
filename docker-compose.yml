@@ -11,7 +11,6 @@ services:
     volumes: 
     - db:/var/lib/postgresql/data
 
-
   next-app:
     container_name: next-app
     build:
