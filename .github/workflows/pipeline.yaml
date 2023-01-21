@@ -54,3 +54,20 @@ jobs:
         run: npm run migrate
       - name: Run jest tests
         run: npm run test
+
+  tag:
+    needs: [unit-tests]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: '0'
+      - name: Bump version
+        if: ${{ github.event_name == 'push' }}
+        uses: anothrNick/github-tag-action@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DEFAULT_BUMP: patch
+          RELEASE_BRANCHES: main
+          PRERELEASE: true
