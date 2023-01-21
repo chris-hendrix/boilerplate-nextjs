@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useSession } from 'next-auth/react'
-import { Box, Chip, IconButton, Paper, TextField } from '@mui/material'
+import { Box, Chip, IconButton, TextField } from '@mui/material'
 import { Send } from '@mui/icons-material'
 
 import { useAddMessageMutation, useGetMessagesQuery } from '@/services/message'
@@ -66,11 +66,11 @@ const Messages = ({ ...rest }) => {
 
   return (
     <Box {...rest}>
-      <Paper sx={{ display: 'flex', height: '100%', width: '100%', flexDirection: 'column', p: 2 }}>
+      <Box sx={{ display: 'flex', height: '100%', width: '100%', flexDirection: 'column' }}>
         {renderMessageList()}
         <Box display="flex" flexGrow={1} justifyContent="flex-end" />
         {renderMessageInput()}
-      </Paper>
+      </Box>
     </Box>
   )
 }

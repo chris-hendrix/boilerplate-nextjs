@@ -1,7 +1,13 @@
-import { ReactNode } from 'react'
+import { ReactNode, useState } from 'react'
 import { signOut, useSession } from 'next-auth/react'
-import { AppBar, Box, Button, IconButton, Toolbar, Typography } from '@mui/material'
+import { AppBar, Box, Button, IconButton, Paper, Toolbar, Typography } from '@mui/material'
+import { ChatBubble, ChevronRight } from '@mui/icons-material'
 import UserAvatar from './UserAvatar'
+import Messages from './Messages'
+
+const barOpenWidth = 400
+const barClosedWidth = 40
+const appBarHeight = 32
 
 type Props = {
   children: ReactNode;
@@ -9,6 +15,8 @@ type Props = {
 
 const Layout: React.FC<Props> = ({ children }) => {
   const { data: session, status } = useSession()
+  const [open, setOpen] = useState(true)
+  const barWidth = open ? barOpenWidth : barClosedWidth
 
   const renderSessionButtons = () => {
     if (status === 'loading') return null
@@ -24,20 +32,50 @@ const Layout: React.FC<Props> = ({ children }) => {
 
     )
   }
+
   return (
-  <Box height="99vh" display="flex" flexDirection="column">
-    <AppBar position="static">
-      <Toolbar>
-        <Typography variant="h6" sx={{ flexGrow: 1 }}>
+    <Box height="99vh" display="flex" flexDirection="column">
+      <AppBar position="static" >
+        <Toolbar sx={{ height: appBarHeight }}>
+          <Typography variant="h6" sx={{ flexGrow: 1 }}>
             Next.js Boilerplate
-        </Typography>
+          </Typography>
           {renderSessionButtons()}
-      </Toolbar>
-    </AppBar>
-    <Box className="content" display="flex" height="100%" flex={1} p={6} >
-      {children}
+        </Toolbar>
+      </AppBar>
+      <Box display="flex" height={`calc(96% - ${appBarHeight}px)`}>
+        <Box
+          className="content"
+          display="flex"
+          // height="100%"
+          width={`calc(100% - ${barWidth}px)`}
+          flex={1}
+          p={6}
+        >
+          {children}
+        </Box>
+        <Paper sx={{
+          display: 'flex',
+          height: '100%',
+          width: barWidth,
+          flexDirection: 'column',
+          p: 2
+        }}>
+          <Box
+            display="flex"
+            alignItems="center"
+            justifyContent={open ? 'flex-start' : 'center'}
+            mb={1}
+          >
+            {open && <ChatBubble />}
+            <IconButton onClick={() => setOpen(!open)}>
+              {open ? <ChevronRight /> : <ChatBubble />}
+            </IconButton>
+          </Box>
+          {open && <Messages width="100%" height="100%" />}
+        </Paper>
+      </Box>
     </Box>
-  </Box>
   )
 }
 

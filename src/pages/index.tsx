@@ -1,9 +1,8 @@
 import Head from 'next/head'
-
+import Image from 'next/image'
 import { Box } from '@mui/material'
 
 import Layout from '@/components/Layout'
-import Messages from '@/components/Messages'
 
 const Home: React.FC = () => (
     <>
@@ -16,7 +15,13 @@ const Home: React.FC = () => (
     <main>
       <Layout>
         <Box display="flex" width="100%" justifyContent="center">
-          <Messages width="80%" />
+          <Image
+            src="/next.svg"
+            alt="Next.js Logo"
+            width={900}
+            height={185}
+            priority
+          />
         </Box>
       </Layout>
       </main>
