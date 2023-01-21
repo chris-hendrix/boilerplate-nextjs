@@ -50,5 +50,7 @@ jobs:
         run: npm install
       - name: Lint
         run: npm run lint
-      - name: Run server unit tests
+      - name: Migrate prisma schema
+        run: npm run migrate
+      - name: Run jest tests
         run: npm run test
