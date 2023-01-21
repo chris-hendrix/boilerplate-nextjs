@@ -1,10 +1,9 @@
 import Head from 'next/head'
 
-import { Box, Paper } from '@mui/material'
+import { Box } from '@mui/material'
 
 import Layout from '@/components/Layout'
-import MessageList from '@/components/MessageList'
-import MessageInput from '@/components/MessageInput'
+import Messages from '@/components/Messages'
 
 const Home: React.FC = () => (
     <>
@@ -17,11 +16,7 @@ const Home: React.FC = () => (
     <main>
       <Layout>
         <Box display="flex" width="100%" justifyContent="center">
-          <Paper sx={{ display: 'flex', height: '100%', width: '80%', flexDirection: 'column', p: 2 }}>
-            <MessageList />
-            <Box display="flex" flexGrow={1} justifyContent="flex-end" />
-            <MessageInput />
-          </Paper>
+          <Messages width="80%" />
         </Box>
       </Layout>
       </main>
