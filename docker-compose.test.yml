@@ -1,0 +1,30 @@
+version: '3.8'
+services:
+  postgres-test:
+    container_name: postgres-test
+    image: postgres:14.1-alpine
+    restart: unless-stopped
+    env_file:
+      - .env.test.local
+    expose:
+      - '5433'
+    ports:
+      - '5433:5433'
+    command: -p 5433
+
+
+  next-app-test:
+    container_name: next-app-test
+    build:
+      context: ./
+      dockerfile: Dockerfile.test
+    env_file:
+      - .env.test.local
+    volumes:
+      - ./:/app/
+    restart: always
+    ports:
+      - 3001:3001
+    depends_on:
+      - postgres-test
+

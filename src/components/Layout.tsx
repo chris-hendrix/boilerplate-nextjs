@@ -29,7 +29,7 @@ const Layout: React.FC<Props> = ({ children }) => {
     <AppBar position="static">
       <Toolbar>
         <Typography variant="h6" sx={{ flexGrow: 1 }}>
-          Message Board
+            Next.js Boilerplate
         </Typography>
           {renderSessionButtons()}
       </Toolbar>
