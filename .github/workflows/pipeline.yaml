@@ -62,7 +62,6 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
         with:
-          ref: ${{ github.sha }}
           fetch-depth: '0'
       - name: Bump version
         if: ${{ github.event_name == 'push' }}
