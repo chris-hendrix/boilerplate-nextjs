@@ -7,7 +7,12 @@ import { useAddMessageMutation, useGetMessagesQuery } from '@/services/message'
 
 import UserAvatar from './UserAvatar'
 
-const Messages = ({ ...rest }) => {
+type Props = {
+  iconsOnly?: boolean
+  [x: string]: unknown
+}
+
+const Messages: React.FC<Props> = ({ iconsOnly = false, ...rest }) => {
   const [content, setContent] = useState<string>('')
   const { data: messages, isLoading } = useGetMessagesQuery()
   const [addMessage, { isLoading: isSending }] = useAddMessageMutation()
@@ -26,7 +31,7 @@ const Messages = ({ ...rest }) => {
         <Box key={message.id} mb={2}>
           <Chip
             avatar={<UserAvatar user={message?.user} />}
-            label={message.content}
+            label={!iconsOnly && message.content}
           />
         </Box>
       ))}
@@ -66,10 +71,10 @@ const Messages = ({ ...rest }) => {
 
   return (
     <Box {...rest}>
-      <Box sx={{ display: 'flex', height: '100%', width: '100%', flexDirection: 'column' }}>
+      <Box display="flex" height="100%" flexDirection="column">
         {renderMessageList()}
         <Box display="flex" flexGrow={1} justifyContent="flex-end" />
-        {renderMessageInput()}
+        {!iconsOnly && renderMessageInput()}
       </Box>
     </Box>
   )

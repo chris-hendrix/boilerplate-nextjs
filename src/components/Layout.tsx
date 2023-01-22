@@ -34,7 +34,7 @@ const Layout: React.FC<Props> = ({ children }) => {
   }
 
   return (
-    <Box height="99vh" display="flex" flexDirection="column">
+    <Box height="100%" display="flex" flexDirection="column">
       <AppBar position="static" >
         <Toolbar sx={{ height: appBarHeight }}>
           <Typography variant="h6" sx={{ flexGrow: 1 }}>
@@ -43,11 +43,10 @@ const Layout: React.FC<Props> = ({ children }) => {
           {renderSessionButtons()}
         </Toolbar>
       </AppBar>
-      <Box display="flex" height={`calc(96% - ${appBarHeight}px)`}>
+      <Box display="flex" height="100%" flex="1 1 1">
         <Box
           className="content"
           display="flex"
-          // height="100%"
           width={`calc(100% - ${barWidth}px)`}
           flex={1}
           p={6}
@@ -56,10 +55,10 @@ const Layout: React.FC<Props> = ({ children }) => {
         </Box>
         <Paper sx={{
           display: 'flex',
-          height: '100%',
           width: barWidth,
           flexDirection: 'column',
-          p: 2
+          p: 2,
+          mt: 1
         }}>
           <Box
             display="flex"
@@ -72,7 +71,7 @@ const Layout: React.FC<Props> = ({ children }) => {
               {open ? <ChevronRight /> : <ChatBubble />}
             </IconButton>
           </Box>
-          {open && <Messages width="100%" height="100%" />}
+          {<Messages iconsOnly={!open} height="100%" />}
         </Paper>
       </Box>
     </Box>
