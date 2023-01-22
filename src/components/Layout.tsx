@@ -1,7 +1,9 @@
-import { ReactNode, useState } from 'react'
+import { ReactNode, useContext } from 'react'
+import { useRouter } from 'next/router'
 import { signOut, useSession } from 'next-auth/react'
-import { AppBar, Box, Button, IconButton, Paper, Toolbar, Typography } from '@mui/material'
+import { AppBar, Box, Button, IconButton, MenuItem, Paper, Toolbar, Typography } from '@mui/material'
 import { ChatBubble, ChevronRight } from '@mui/icons-material'
+import { LayoutContext } from './LayoutContext'
 import UserAvatar from './UserAvatar'
 import Messages from './Messages'
 
@@ -9,16 +11,24 @@ const barOpenWidth = 400
 const barClosedWidth = 40
 const appBarHeight = 32
 
+export const PAGES: Array<{ name: string, route: string }> = [
+  { route: '/', name: 'Home' },
+  { route: '/users', name: 'Users' }
+]
+
 type Props = {
-  children: ReactNode;
+  children: ReactNode
 }
 
 const Layout: React.FC<Props> = ({ children }) => {
   const { data: session, status } = useSession()
-  const [open, setOpen] = useState(true)
-  const barWidth = open ? barOpenWidth : barClosedWidth
+  const { chatOpen, setChatOpen } = useContext(LayoutContext)
+  const barWidth = chatOpen ? barOpenWidth : barClosedWidth
+  const router = useRouter()
+  const pages = PAGES.filter((p) => p.route !== '/')
+  const currentPage = pages.find((page) => page.route === router.route)
 
-  const renderSessionButtons = () => {
+  const renderMenuItems = () => {
     if (status === 'loading') return null
     if (!session?.user) return <Button href="/api/auth/signin" color="inherit">Login</Button>
 
@@ -27,7 +37,7 @@ const Layout: React.FC<Props> = ({ children }) => {
         <IconButton>
           <UserAvatar user={session?.user} />
         </IconButton>
-        <Button onClick={() => signOut()} color="inherit">Logout</Button>
+        <MenuItem onClick={() => signOut()} color="inherit">Logout</MenuItem>
       </>
 
     )
@@ -36,11 +46,23 @@ const Layout: React.FC<Props> = ({ children }) => {
   return (
     <Box height="100%" display="flex" flexDirection="column">
       <AppBar position="static" >
-        <Toolbar sx={{ height: appBarHeight }}>
-          <Typography variant="h6" sx={{ flexGrow: 1 }}>
-            Next.js Boilerplate
-          </Typography>
-          {renderSessionButtons()}
+        <Toolbar sx={{ height: appBarHeight, alignContent: 'center' }}>
+          <Box display="flex" flexGrow={1}>
+            <MenuItem onClick={() => router.push('/')}>
+              <Typography variant="h6">
+                Next.js Boilerplate
+              </Typography>
+            </MenuItem>
+            {pages.map((page) => (
+              <MenuItem
+                key={page.route}
+                onClick={() => router.push(page.route)}
+                selected={currentPage?.route === page.route}>
+                {page.name}
+              </MenuItem>
+            ))}
+          </Box>
+          {renderMenuItems()}
         </Toolbar>
       </AppBar>
       <Box display="flex" height="100%" flex="1 1 1">
@@ -63,15 +85,15 @@ const Layout: React.FC<Props> = ({ children }) => {
           <Box
             display="flex"
             alignItems="center"
-            justifyContent={open ? 'flex-start' : 'center'}
+            justifyContent={chatOpen ? 'flex-start' : 'center'}
             mb={1}
           >
-            {open && <ChatBubble />}
-            <IconButton onClick={() => setOpen(!open)}>
-              {open ? <ChevronRight /> : <ChatBubble />}
+            {chatOpen && <ChatBubble />}
+            <IconButton onClick={() => setChatOpen(!chatOpen)}>
+              {chatOpen ? <ChevronRight /> : <ChatBubble />}
             </IconButton>
           </Box>
-          {<Messages iconsOnly={!open} height="100%" />}
+          {<Messages iconsOnly={!chatOpen} height="100%" />}
         </Paper>
       </Box>
     </Box>

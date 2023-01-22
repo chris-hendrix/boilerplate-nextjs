@@ -1,5 +1,5 @@
 import { Prisma } from '@prisma/client'
 
-export type Message = Prisma.MessageGetPayload<{
+export type MessageWithUser = Prisma.MessageGetPayload<{
   include: { user: true }
 }>

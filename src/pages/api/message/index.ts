@@ -1,10 +1,10 @@
 import prisma from '@/lib/prisma'
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { Message } from '@/types'
+import { MessageWithUser } from '@/types'
 
 export default async function handle(
   req: NextApiRequest,
-  res: NextApiResponse<Message | Message[] | string>
+  res: NextApiResponse<MessageWithUser | MessageWithUser[] | string>
 ) {
   let result = null
   if (req.method === 'POST') {
