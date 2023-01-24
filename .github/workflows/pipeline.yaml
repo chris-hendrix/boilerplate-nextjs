@@ -64,8 +64,11 @@ jobs:
         with:
           fetch-depth: '0'
       - name: Bump version
-        if: ${{ github.event_name == 'push' }}
+        if: ${{ github.event_name == 'pull_request' && github.ref == 'refs/heads/main'}}
         uses: anothrNick/github-tag-action@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DEFAULT_BUMP: minor
+          RELEASE_BRANCHES: main
+          INITIAL_VERSION: '2023.0.0'
 
