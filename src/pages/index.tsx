@@ -18,7 +18,7 @@ const HomePage: React.FC = () => {
       <link rel="icon" href="/favicon.ico" />
     </Head>
     <Layout>
-      <Box display="flex" height="89vh" width="100%" justifyContent="center" component="main">
+        <Box display="flex" width="100%" justifyContent="center" component="main">
         <Image
           src="/next.svg"
           alt="Next.js Logo"

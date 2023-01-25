@@ -1,9 +1,9 @@
 import { useState } from 'react'
 import { useSession } from 'next-auth/react'
-import { Box, Chip, IconButton, TextField } from '@mui/material'
+import { Box, Chip, IconButton, TextField, Tooltip } from '@mui/material'
 import { Send } from '@mui/icons-material'
 
-import { useAddMessageMutation, useGetMessagesQuery } from '@/services/message'
+import { useAddMessageMutation, useGetMessagesQuery } from '@/store/message'
 
 import UserAvatar from './UserAvatar'
 
@@ -29,10 +29,12 @@ const Messages: React.FC<Props> = ({ iconsOnly = false, ...rest }) => {
     <Box display="flex" flexDirection="column" >
       {messages.map((message) => (
         <Box key={message.id} mb={2}>
-          <Chip
-            avatar={<UserAvatar user={message?.user} />}
-            label={!iconsOnly && message.content}
-          />
+          <Tooltip title={`${message?.user?.name}${iconsOnly ? `: ${message?.content}` : ''}`}>
+            <Chip
+              avatar={<UserAvatar user={message?.user} />}
+              label={!iconsOnly && message.content}
+            />
+          </Tooltip>
         </Box>
       ))}
     </Box>

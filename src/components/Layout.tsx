@@ -17,10 +17,11 @@ export const PAGES: Array<{ name: string, route: string }> = [
 ]
 
 type Props = {
-  children: ReactNode
+  children: ReactNode,
+  [x: string]: unknown
 }
 
-const Layout: React.FC<Props> = ({ children }) => {
+const Layout: React.FC<Props> = ({ children, ...rest }) => {
   const { data: session, status } = useSession()
   const { chatOpen, setChatOpen } = useContext(LayoutContext)
   const barWidth = chatOpen ? barOpenWidth : barClosedWidth
@@ -44,7 +45,7 @@ const Layout: React.FC<Props> = ({ children }) => {
   }
 
   return (
-    <Box height="100%" display="flex" flexDirection="column">
+    <Box height={`calc(100vh - 3px - ${appBarHeight}px)`} display="flex" flexDirection="column" component="main">
       <AppBar position="static" >
         <Toolbar sx={{ height: appBarHeight, alignContent: 'center' }}>
           <Box display="flex" flexGrow={1}>
@@ -73,7 +74,9 @@ const Layout: React.FC<Props> = ({ children }) => {
           flex={1}
           p={6}
         >
-          {children}
+          <Box width="100%" {...rest}>
+            {children}
+          </Box>
         </Box>
         <Paper sx={{
           display: 'flex',
