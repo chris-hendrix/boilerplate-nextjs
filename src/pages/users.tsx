@@ -1,4 +1,5 @@
 import { GetStaticProps } from 'next'
+import Router from 'next/router'
 import { User } from '@prisma/client'
 import { Card, CardActionArea, Stack, Typography } from '@mui/material'
 import prisma from '@/lib/prisma'
@@ -18,15 +19,15 @@ type Props = {
 }
 const UsersPage: React.FC<Props> = ({ users }) => (
   <Layout display="flex" justifyContent="center">
-    <Stack width="80%" spacing={2}>
+    <Stack width="100%" spacing={2}>
       {users.map((user) => (
         <Card key={user.id} >
           <CardActionArea
-            onClick={() => console.log('todo')}
+            onClick={() => Router.push(`user/${user.id}`)}
             sx={{ p: 3, display: 'flex', justifyContent: 'flex-start' }}
           >
             <UserAvatar user={user} sx={{ mr: 2 }} />
-            <Typography>{user.name}</Typography>
+            <Typography variant="h6">{user.name}</Typography>
           </CardActionArea>
         </Card>
       ))}
