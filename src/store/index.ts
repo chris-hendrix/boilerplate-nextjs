@@ -1,6 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit'
 import { setupListeners } from '@reduxjs/toolkit/query/react'
-import { messageApi } from './services/message'
+import { messageApi } from './message'
 
 const store = configureStore({
   reducer: {

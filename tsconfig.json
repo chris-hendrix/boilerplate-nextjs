@@ -23,7 +23,7 @@
     "@components": ["components"],
     "@lib": ["lib"],
     "@pages": ["pages"],
-    "@services": ["services"],
+    "@store": ["store"],
   },
   "include": ["next-env.d.ts", "next-auth.d.ts", "**/*.ts", "**/*.tsx"],
   "exclude": ["node_modules"]
