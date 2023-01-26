@@ -53,10 +53,12 @@ jobs:
         run: npm run migrate
       - name: Run jest tests
         run: npm run test
-      - name: Build app
-        run: npm run build
       - name: Run e2e tests
-        run: npm run start && npm run cypress
+        uses: cypress-io/github-action@v5
+        with:
+          build: npm run build
+          start: npm run start
+          wait-on: http://localhost:3000
 
   tag:
     needs: [unit-tests]
