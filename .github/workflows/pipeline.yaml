@@ -6,7 +6,7 @@ on:
 jobs:
   unit-tests:
     runs-on: ubuntu-latest
-    container: node:latest
+    container: cypress/browsers:node18.12.0-chrome107
     env:
       # next-auth
       SECRET: CI_SECRET
