@@ -7,6 +7,7 @@
     "NEXTAUTH",
     "nextjs",
     "reduxjs",
+    "signin",
     "Signup"
   ]
 }
