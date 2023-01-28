@@ -21,6 +21,7 @@ A non-exhaustive list of technologies in this project:
 - [PostgreSQL](https://www.postgresql.org/)
 - [Prisma](https://www.prisma.io/)
 - [React](https://reactjs.org/)
+- [React Hook Form](https://react-hook-form.com/) and [validator.js](https://github.com/validatorjs/validator.js)
 - [Redux RTK query](https://redux-toolkit.js.org/rtk-query/overview)
 - [Typescript](https://www.typescriptlang.org/)
 
