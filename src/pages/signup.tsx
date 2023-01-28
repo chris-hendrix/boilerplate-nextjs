@@ -6,29 +6,24 @@ import { Button, Stack, TextField } from '@mui/material'
 import { Google } from '@mui/icons-material'
 import isEmail from 'validator/lib/isEmail'
 import isStrongPassword from 'validator/lib/isStrongPassword'
-import throwBaseQueryError from '@/lib/error'
+import getBaseQueryErrorMessage from '@/lib/error'
 
+import SnackbarAlert from '@/components/SnackbarAlert'
 import { useAddUserMutation } from '@/store/user'
 
 import Layout from '@/components/Layout'
 
 const SignupPage: React.FC = () => {
-  const [addUser, { isLoading }] = useAddUserMutation()
+  const [addUser, { isLoading, isError, isSuccess, error }] = useAddUserMutation()
   const { register, getValues, formState: { errors }, handleSubmit } = useForm({ mode: 'onChange' })
   const [signupWithGoogle, setSignupWithGoogle] = useState(true)
 
-  const onSubmit = async (data: { [x: string]: unknown }) => {
-    try {
-      const res = await addUser(data)
-      'error' in res && throwBaseQueryError(res.error)
-      Router.push('/api/auth/signin')
-    } catch (error) {
-      error instanceof Error && window.alert(error.message)
-    }
-  }
+  const onSubmit = async (data: { [x: string]: unknown }) => { await addUser(data) }
+  isSuccess && Router.push('/api/auth/signin')
 
   return (
     <>
+      {isError && <SnackbarAlert content={getBaseQueryErrorMessage(error)} />}
       <Layout display="flex" justifyContent="center" width="100%">
         <Stack
           width="400px"
