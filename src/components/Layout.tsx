@@ -1,7 +1,7 @@
 import { ReactNode, useContext } from 'react'
 import { useRouter } from 'next/router'
-import { signOut, useSession } from 'next-auth/react'
-import { AppBar, Box, Button, IconButton, MenuItem, Paper, Toolbar, Typography } from '@mui/material'
+import { signIn, signOut, useSession } from 'next-auth/react'
+import { AppBar, Box, IconButton, MenuItem, Paper, Toolbar, Typography } from '@mui/material'
 import { ChatBubble, ChevronRight } from '@mui/icons-material'
 import { LayoutContext } from './LayoutContext'
 import UserAvatar from './UserAvatar'
@@ -31,7 +31,14 @@ const Layout: React.FC<Props> = ({ children, ...rest }) => {
 
   const renderMenuItems = () => {
     if (status === 'loading') return null
-    if (!session?.user) return <Button href="/api/auth/signin" color="inherit">Login</Button>
+    if (!session?.user) {
+      return (
+        <>
+          <MenuItem onClick={() => router.push('/signup')}>Sign up</MenuItem>
+          <MenuItem onClick={() => signIn()} color="inherit">Login</MenuItem>
+        </>
+      )
+    }
 
     return (
       <>

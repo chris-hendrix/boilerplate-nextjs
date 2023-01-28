@@ -1,15 +1,21 @@
+import Router from 'next/router'
 import { useForm } from 'react-hook-form'
 import { Button, Stack, TextField } from '@mui/material'
 import { Google } from '@mui/icons-material'
 import isEmail from 'validator/lib/isEmail'
 import isStrongPassword from 'validator/lib/isStrongPassword'
 
+import { useAddUserMutation } from '@/store/user'
+
 import Layout from '@/components/Layout'
 
 const SignupPage: React.FC = () => {
+  const [addUser, { isLoading }] = useAddUserMutation()
   const { register, getValues, formState: { errors }, handleSubmit } = useForm({ mode: 'onChange' })
-  const onSubmit = (data: { [x: string]: unknown }) => {
-    console.log({ data, errors })
+
+  const onSubmit = async (data: { [x: string]: unknown }) => {
+    await addUser(data)
+    Router.push('/api/auth/signin')
   }
 
   return (
@@ -19,6 +25,8 @@ const SignupPage: React.FC = () => {
           width="400px"
           spacing={2}
           alignItems="center"
+          component="form"
+          onSubmit={handleSubmit(onSubmit)}
         >
           <TextField
             label="Email"
@@ -52,11 +60,13 @@ const SignupPage: React.FC = () => {
             })}
           />
           <Button
-            onClick={handleSubmit(onSubmit)}
-            variant="contained">
+            type="submit"
+            variant="contained"
+            disabled={isLoading}
+          >
             Sign up
           </Button>
-          <Button startIcon={<Google />}>Sign in with Google</Button>
+          <Button disabled={isLoading} startIcon={<Google />}>Sign in with Google</Button>
         </Stack>
       </Layout>
     </>
