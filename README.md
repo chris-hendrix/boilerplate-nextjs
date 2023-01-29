@@ -10,7 +10,7 @@ The services used in this project are:
 
 ### Technologies
 A non-exhaustive list of technologies in this project:
-- [Cypress](https://www.cypress.io/) - TODO
+- [Cypress](https://www.cypress.io/)
 - [Docker](https://www.docker.com/) and [Docker Compose](https://docs.docker.com/compose/)
 - [Github Actions](https://github.com/features/actions)
 - [Jest](https://jestjs.io/)
