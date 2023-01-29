@@ -58,6 +58,7 @@ const Messages: React.FC<Props> = ({ iconsOnly = false, ...rest }) => {
         InputProps={{
           endAdornment:
             <IconButton
+              className="send-message-button"
               onClick={(e) => {
                 e.preventDefault()
                 sendMessage()
