@@ -5,7 +5,7 @@ const cypressConfig = defineConfig({
     baseUrl: 'http://localhost:3001',
     video: false,
     screenshotOnRunFailure: false,
-    supportFile: false
+    supportFile: 'cypress/support.ts',
   },
 })
 

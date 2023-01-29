@@ -76,6 +76,7 @@ const SignupPage: React.FC = () => {
                 })}
               />
               <Button
+                className="signUpButton"
                 type="submit"
                 variant="contained"
                 disabled={isLoading}
@@ -86,6 +87,7 @@ const SignupPage: React.FC = () => {
           )}
 
           <Button
+            className="signUpWithGoogleButton"
             disabled={isLoading}
             startIcon={<Google />}
             onClick={async () => signIn('google', { callbackUrl: '/' })}
@@ -94,7 +96,10 @@ const SignupPage: React.FC = () => {
             Sign up with Google
           </Button>
           {signupWithGoogle
-            && <Button onClick={() => setSignupWithGoogle(false)}>
+            && <Button
+              className="signUpWithEmailButton"
+              onClick={() => setSignupWithGoogle(false)}
+            >
               Or sign in with email
             </Button>}
         </Stack>

@@ -34,8 +34,8 @@ const Layout: React.FC<Props> = ({ children, ...rest }) => {
     if (!session?.user) {
       return (
         <>
-          <MenuItem onClick={() => router.push('/signup')}>Sign up</MenuItem>
-          <MenuItem onClick={() => signIn()} color="inherit">Login</MenuItem>
+          <MenuItem className="signUpMenuButton" onClick={() => router.push('/signup')}>Sign up</MenuItem>
+          <MenuItem className="loginMenuButton" onClick={() => signIn()} color="inherit">Login</MenuItem>
         </>
       )
     }
@@ -45,7 +45,7 @@ const Layout: React.FC<Props> = ({ children, ...rest }) => {
         <IconButton>
           <UserAvatar user={session?.user} />
         </IconButton>
-        <MenuItem onClick={() => signOut()} color="inherit">Logout</MenuItem>
+        <MenuItem className="logoutMenuButton" onClick={() => signOut()} color="inherit">Logout</MenuItem>
       </>
 
     )
