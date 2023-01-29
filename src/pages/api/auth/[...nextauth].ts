@@ -1,10 +1,30 @@
+/* eslint-disable no-param-reassign */
 import NextAuth, { NextAuthOptions } from 'next-auth'
 import { PrismaAdapter } from '@next-auth/prisma-adapter'
 import GoogleProvider from 'next-auth/providers/google'
+import CredentialsProvider from 'next-auth/providers/credentials'
 import prisma from '@/lib/prisma'
+import bcrypt from 'bcrypt'
 
 const options: NextAuthOptions = {
   providers: [
+    CredentialsProvider({
+      name: 'Credentials',
+      credentials: {
+        email: { label: 'Email', type: 'email' },
+        password: { label: 'Password', type: 'password' }
+      },
+      async authorize(credentials) {
+        if (!credentials) throw new Error('undefined credentials')
+
+        const user = await prisma.user.findUnique({ where: { email: credentials.email } })
+        if (!user) throw new Error('email does not exist')
+
+        const valid = await bcrypt.compare(credentials.password, user?.password as string)
+        if (!valid) throw new Error('invalid credentials')
+        return user
+      },
+    }),
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID || '',
       clientSecret: process.env.GOOGLE_CLIENT_SECRET || ''
@@ -12,10 +32,11 @@ const options: NextAuthOptions = {
   ],
   adapter: PrismaAdapter(prisma),
   secret: process.env.SECRET,
+  session: { strategy: 'jwt' }, // for credentials provider
   callbacks: {
-    async session({ session, user }) {
-      // eslint-disable-next-line no-param-reassign
-      session.user = await prisma.user.findUnique({ where: { id: user.id } })
+    async session({ session, user, token }) {
+      const email = user?.email || token?.email as string
+      session.user = await prisma.user.findUnique({ where: { email } })
       return session
     }
   }

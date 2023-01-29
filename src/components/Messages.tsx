@@ -44,6 +44,7 @@ const Messages: React.FC<Props> = ({ iconsOnly = false, ...rest }) => {
     <Box display="flex" alignItems="center">
       <UserAvatar user={session?.user} />
       <TextField
+        className="messageInput"
         fullWidth
         disabled={!session}
         value={content}
@@ -58,6 +59,7 @@ const Messages: React.FC<Props> = ({ iconsOnly = false, ...rest }) => {
         InputProps={{
           endAdornment:
             <IconButton
+              className="sendMessageButton"
               onClick={(e) => {
                 e.preventDefault()
                 sendMessage()

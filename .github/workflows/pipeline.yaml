@@ -4,9 +4,9 @@ on:
   push:
 
 jobs:
-  unit-tests:
+  tests:
     runs-on: ubuntu-latest
-    container: node:latest
+    container: cypress/browsers:node18.12.0-chrome107
     env:
       # next-auth
       SECRET: CI_SECRET
@@ -37,36 +37,59 @@ jobs:
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
+
     steps:
       - name: Expand env variables
         run: |
           echo "DATABASE_URL=postgresql://$POSTGRES_USER:$POSTGRES_PASSWORD@$POSTGRES_HOSTNAME:$POSTGRES_PORT/$POSTGRES_DB?schema=public" >> $GITHUB_ENV
           echo "NEXTAUTH_URL=$PROTOCOL://$HOSTNAME:$PORT" >> $GITHUB_ENV
+          echo "CYPRESS_BASE_URL=$PROTOCOL://$HOSTNAME:$PORT" >> $GITHUB_ENV
+
       - name: Checkout code
         uses: actions/checkout@v3
+
       - name: Install dependencies
         run: npm install
-      - name: Lint
+
+      - name: Run lint
         run: npm run lint
+
       - name: Migrate prisma schema
         run: npm run migrate
+  
       - name: Run jest tests
         run: npm run test
 
+      - name: Run cypress tests
+        uses: cypress-io/github-action@v5
+        with:
+          build: npm run build
+          start: npm run start
+          wait-on: http://localhost:3000
+
+
   tag:
-    needs: [unit-tests]
+    needs: [tests]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
         with:
           fetch-depth: '0'
-      - name: Bump main branch
+      - name: Bump tag for main branch (patch)
         if: ${{ github.ref == 'refs/heads/main' }}
         uses: anothrNick/github-tag-action@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          DEFAULT_BUMP: minor
+          DEFAULT_BUMP: patch
           RELEASE_BRANCHES: main
+          INITIAL_VERSION: '2023.0.0'
+      - name: Bump tag for release branch (minor)
+        if: ${{ github.ref == 'refs/heads/release' }}
+        uses: anothrNick/github-tag-action@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DEFAULT_BUMP: patch
+          RELEASE_BRANCHES: release
           INITIAL_VERSION: '2023.0.0'
 

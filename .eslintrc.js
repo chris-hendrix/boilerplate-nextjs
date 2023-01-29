@@ -2,12 +2,14 @@ module.exports = {
   env: {
     browser: true,
     es2021: true,
+    'cypress/globals': true
   },
   extends: [
     'next/core-web-vitals',
     'eslint:recommended',
     'plugin:@typescript-eslint/recommended',
     'plugin:react/recommended',
+    'plugin:cypress/recommended',
     'airbnb-base',
     'airbnb-typescript',
   ],

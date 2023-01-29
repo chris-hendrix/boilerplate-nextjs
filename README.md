@@ -10,7 +10,7 @@ The services used in this project are:
 
 ### Technologies
 A non-exhaustive list of technologies in this project:
-- [Cypress](https://www.cypress.io/) - TODO
+- [Cypress](https://www.cypress.io/)
 - [Docker](https://www.docker.com/) and [Docker Compose](https://docs.docker.com/compose/)
 - [Github Actions](https://github.com/features/actions)
 - [Jest](https://jestjs.io/)
@@ -21,6 +21,7 @@ A non-exhaustive list of technologies in this project:
 - [PostgreSQL](https://www.postgresql.org/)
 - [Prisma](https://www.prisma.io/)
 - [React](https://reactjs.org/)
+- [React Hook Form](https://react-hook-form.com/) and [validator.js](https://github.com/validatorjs/validator.js)
 - [Redux RTK query](https://redux-toolkit.js.org/rtk-query/overview)
 - [Typescript](https://www.typescriptlang.org/)
 
