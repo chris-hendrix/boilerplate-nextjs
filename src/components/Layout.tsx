@@ -34,15 +34,26 @@ const Layout: React.FC<Props> = ({ children, ...rest }) => {
     if (!session?.user) {
       return (
         <>
-          <MenuItem className="signUpMenuButton" onClick={() => router.push('/signup')}>Sign up</MenuItem>
-          <MenuItem className="loginMenuButton" onClick={() => signIn()} color="inherit">Login</MenuItem>
+          <MenuItem
+            className="signUpMenuButton"
+            onClick={() => router.push('/signup')}
+            sx={{ bgcolor: 'secondary.main' }}
+          >
+            Sign up
+          </MenuItem>
+          <MenuItem
+            className="loginMenuButton"
+            onClick={() => signIn()}
+          >
+            Login
+          </MenuItem>
         </>
       )
     }
 
     return (
       <>
-        <IconButton>
+        <IconButton onClick={() => router.push('/profile')}>
           <UserAvatar user={session?.user} />
         </IconButton>
         <MenuItem className="logoutMenuButton" onClick={() => signOut()} color="inherit">Logout</MenuItem>
@@ -55,7 +66,7 @@ const Layout: React.FC<Props> = ({ children, ...rest }) => {
     <Box height={`calc(100vh - 3px - ${appBarHeight}px)`} display="flex" flexDirection="column" component="main">
       <AppBar position="static" >
         <Toolbar sx={{ height: appBarHeight, alignContent: 'center' }}>
-          <Box display="flex" flexGrow={1}>
+          <Box display="flex" flexGrow={1} sx={{ '& .Mui-selected': { fontWeight: 600 } }}>
             <MenuItem onClick={() => router.push('/')}>
               <Typography variant="h6">
                 Next.js Boilerplate
