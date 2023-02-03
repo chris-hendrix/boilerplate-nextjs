@@ -1,7 +1,7 @@
 import { GetServerSideProps } from 'next'
 import prisma from '@/lib/prisma'
 import { User } from '@prisma/client'
-import Layout from '@/components/Layout'
+import Layout from '@/layouts/Layout'
 import UserProfile from '@/components/UserProfile'
 
 export const getServerSideProps: GetServerSideProps = async (context) => {

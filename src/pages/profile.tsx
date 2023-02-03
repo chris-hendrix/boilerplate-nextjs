@@ -1,5 +1,5 @@
 import { useSession } from 'next-auth/react'
-import Layout from '@/components/Layout'
+import Layout from '@/layouts/Layout'
 import UserProfile from '@/components/UserProfile'
 
 const ProfilePage: React.FC = () => {

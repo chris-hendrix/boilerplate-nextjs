@@ -11,7 +11,7 @@ import getBaseQueryErrorMessage from '@/lib/error'
 import SnackbarAlert from '@/components/SnackbarAlert'
 import { useAddUserMutation } from '@/store/user'
 
-import Layout from '@/components/Layout'
+import Layout from '@/layouts/Layout'
 
 const SignupPage: React.FC = () => {
   const [addUser, { isLoading, isError, isSuccess, error }] = useAddUserMutation()

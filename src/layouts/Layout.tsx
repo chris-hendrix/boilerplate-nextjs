@@ -4,8 +4,8 @@ import { signIn, signOut, useSession } from 'next-auth/react'
 import { AppBar, Box, IconButton, MenuItem, Paper, Toolbar, Typography } from '@mui/material'
 import { ChatBubble, ChevronRight } from '@mui/icons-material'
 import { LayoutContext } from './LayoutContext'
-import UserAvatar from './UserAvatar'
-import Messages from './Messages'
+import UserAvatar from '../components/UserAvatar'
+import Messages from '../components/Messages'
 
 const barOpenWidth = 400
 const barClosedWidth = 40

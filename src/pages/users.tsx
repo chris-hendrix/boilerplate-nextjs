@@ -4,7 +4,7 @@ import { useSession } from 'next-auth/react'
 import { User } from '@prisma/client'
 import { Card, CardActionArea, Stack, Typography } from '@mui/material'
 import prisma from '@/lib/prisma'
-import Layout from '@/components/Layout'
+import Layout from '@/layouts/Layout'
 import UserAvatar from '@/components/UserAvatar'
 
 export const getServerSideProps: GetServerSideProps = async () => {
