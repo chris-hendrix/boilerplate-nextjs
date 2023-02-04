@@ -42,5 +42,6 @@ module.exports = {
     'object-curly-newline': 'off', // allows objects on one line
     'react/prop-types': 'off', // no need for propTypes in typescript
     'react/react-in-jsx-scope': 'off', // no need to import React in jsx files
+    'react-hooks/exhaustive-deps': 'off' // no need for all dependencies for useEffect
   }
 };
