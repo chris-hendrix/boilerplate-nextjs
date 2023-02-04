@@ -2,7 +2,6 @@ ARG BASE=node:16-bullseye
 FROM ${BASE} AS dependencies
 
 WORKDIR /app
-ENV NODE_ENV development
 
 # Install dependencies based on the preferred package manager
 COPY package.json package-lock.json* ./
@@ -19,8 +18,5 @@ RUN chown node:node . node_modules .next
 RUN chown -R node:node node_modules/.prisma
 
 USER node
-
-EXPOSE 3000
-ENV PORT 3000
 
 CMD npm run dev

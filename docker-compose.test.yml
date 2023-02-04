@@ -12,17 +12,18 @@ services:
       - '5433:5433'
     command: -p 5433
 
-
   next-app-test:
     container_name: next-app-test
     build:
       context: ./
-      dockerfile: Dockerfile.test
+      dockerfile: Dockerfile
     env_file:
       - .env.test.local
     volumes:
       - ./:/app/
     restart: always
+    expose:
+      - '3001'
     ports:
       - 3001:3001
     depends_on:
