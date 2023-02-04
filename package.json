@@ -7,17 +7,17 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "test": "NODE_ENV=test jest --config=./jest/jest.config.ts --runInBand --forceExit",
+    "jest": "NODE_ENV=test jest --config=jest/jest.config.ts --runInBand --forceExit",
     "migrate": "npx prisma migrate dev",
     "dev:migrate": "npm run migrate && npm run dev",
-    "migrate:local": "docker exec -it next-app npm run migrate",
+    "migrate:local": "docker exec -it app npm run migrate",
     "up": "docker-compose -f docker-compose.yml up -d && docker-compose logs -f",
     "down": "docker-compose -f docker-compose.yml down",
     "up:test": "docker-compose -f docker-compose.test.yml up -d && docker-compose logs -f",
     "down:test": "docker-compose -f docker-compose.test.yml down",
-    "test:local": "docker exec -it next-app-test npm run test",
-    "cypress:open": "cypress open",
-    "cypress": "cypress run"
+    "jest:local": "docker exec -it app-test npm run jest",
+    "cypress:open": "cypress open --config-file cypress/cypress.config.ts",
+    "cypress": "cypress run --config-file cypress/cypress.config.ts"
   },
   "dependencies": {
     "@emotion/react": "^11.10.5",
