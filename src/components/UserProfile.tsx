@@ -16,7 +16,7 @@ const UserProfile: React.FC<Props> = ({ user, ...rest }) => {
   const [isError, setIsError] = useState(false)
 
   const uploadFile = async () => {
-    if (!file) return
+    if (!supabase || !file) return
     const bucket = process.env.NODE_ENV
     const path = `${user.id}/${file.name}`
     const { data, error } = await supabase.storage.from(bucket).upload(path, file)

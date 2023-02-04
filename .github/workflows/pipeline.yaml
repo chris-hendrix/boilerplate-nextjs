@@ -8,17 +8,20 @@ jobs:
     runs-on: ubuntu-latest
     container: cypress/browsers:node18.12.0-chrome107
     env:
-      # next-auth
-      SECRET: CI_SECRET
-      GOOGLE_CLIENT_ID: blank
-      GOOGLE_CLIENT_SECRET: blank
       # database
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: postgres
       POSTGRES_HOSTNAME: postgres
       POSTGRES_PORT: 5432
-      # app
+      # next-auth
+      SECRET:  nextAuthSecret
+      GOOGLE_CLIENT_ID:  ${{ secrets.GOOGLE_CLIENT_ID }}
+      GOOGLE_CLIENT_SECRET:  ${{ secrets.GOOGLE_CLIENT_SECRET }}
+      # supabase
+      SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+      SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
+      # host
       PROTOCOL: http
       HOSTNAME: localhost
       PORT: 3000
@@ -51,11 +54,11 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Run lint
-        run: npm run lint
-
       - name: Migrate prisma schema
         run: npm run migrate
+
+      - name: Run lint
+        run: npm run lint
   
       - name: Run jest tests
         run: npm run jest
@@ -76,6 +79,7 @@ jobs:
         uses: actions/checkout@v3
         with:
           fetch-depth: '0'
+
       - name: Bump tag for main branch (patch)
         if: ${{ github.ref == 'refs/heads/main' }}
         uses: anothrNick/github-tag-action@v1
@@ -84,6 +88,7 @@ jobs:
           DEFAULT_BUMP: patch
           RELEASE_BRANCHES: main
           INITIAL_VERSION: '2023.0.0'
+
       - name: Bump tag for release branch (minor)
         if: ${{ github.ref == 'refs/heads/release' }}
         uses: anothrNick/github-tag-action@v1

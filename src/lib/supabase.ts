@@ -1,9 +1,10 @@
 import { createClient } from '@supabase/supabase-js'
 
-const createSupabaseClient = () => createClient(
-  process.env.SUPABASE_URL || '',
-  process.env.SUPABASE_ANON_KEY || ''
-)
+const createSupabaseClient = () => {
+  const { SUPABASE_URL, SUPABASE_ANON_KEY } = process.env
+  if (!SUPABASE_URL || !SUPABASE_ANON_KEY) return null
+  return createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
+}
 
 const getSupabaseClient = () => {
   if (process.env.NODE_ENV === 'production') return createSupabaseClient()
