@@ -6,13 +6,15 @@ services:
     restart: unless-stopped
     env_file:
       - .env
+    expose:
+      - '5432'
     ports:
       - '5432:5432'
     volumes: 
     - db:/var/lib/postgresql/data
 
-  next-app:
-    container_name: next-app
+  app:
+    container_name: app
     build:
       context: ./
       dockerfile: Dockerfile

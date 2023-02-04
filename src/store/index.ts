@@ -8,9 +8,11 @@ const store = configureStore({
     [messageApi.reducerPath]: messageApi.reducer,
     [userApi.reducerPath]: userApi.reducer,
   },
-  middleware: (getDefaultMiddleware) => getDefaultMiddleware()
-    .concat([messageApi.middleware, userApi.middleware])
-  ,
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat([
+    messageApi.middleware,
+    userApi.middleware
+  ]),
+  devTools: process.env.NODE_ENV !== 'production'
 })
 
 setupListeners(store.dispatch)

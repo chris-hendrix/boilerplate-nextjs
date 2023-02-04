@@ -12,8 +12,8 @@ services:
       - '5433:5433'
     command: -p 5433
 
-  next-app-test:
-    container_name: next-app-test
+  app-test:
+    container_name: app-test
     build:
       context: ./
       dockerfile: Dockerfile
