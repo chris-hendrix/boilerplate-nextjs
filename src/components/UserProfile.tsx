@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import Router from 'next/router'
+import { useSession } from 'next-auth/react'
 import { User } from '@prisma/client'
 import { Box, Button, IconButton, Typography } from '@mui/material'
 import supabase from '@/lib/supabase'
@@ -12,8 +13,12 @@ type Props = {
 }
 
 const UserProfile: React.FC<Props> = ({ user, ...rest }) => {
+  const { data: session } = useSession()
   const [file, setFile] = useState<File | undefined>()
   const [isError, setIsError] = useState(false)
+  const canEdit = session?.user?.id === user.id
+
+  console.log({ canEdit })
 
   const uploadFile = async () => {
     if (!supabase || !file) return
@@ -32,6 +37,7 @@ const UserProfile: React.FC<Props> = ({ user, ...rest }) => {
     <Box display="flex" alignItems="center" mb={2}>
         <IconButton
           component="label"
+          disabled={!canEdit}
           sx={{ mr: 3 }}
         >
           <UserAvatar user={user} />

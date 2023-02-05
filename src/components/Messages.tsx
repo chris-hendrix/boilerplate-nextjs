@@ -21,7 +21,7 @@ const Messages: React.FC<Props> = ({ iconsOnly = false, ...rest }) => {
   if (isLoading || !messages) return null
 
   const sendMessage = async () => {
-    await addMessage({ content, user: session?.user })
+    await addMessage({ content })
     setContent('')
   }
 
