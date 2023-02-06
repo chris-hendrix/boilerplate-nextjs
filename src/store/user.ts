@@ -11,8 +11,16 @@ export const userApi = createApi({
         method: 'POST',
         body,
       })
+    }),
+    updateUser: build.mutation({
+      query: (data) => ({
+        url: `user/${data?.id}`,
+        method: 'PUT',
+        body: { ...data, id: undefined }
+      }),
+      // invalidatesTags: (user) => [{ type: 'User', id: user?.id }],
     })
   })
 })
 
-export const { useAddUserMutation } = userApi
+export const { useAddUserMutation, useUpdateUserMutation } = userApi

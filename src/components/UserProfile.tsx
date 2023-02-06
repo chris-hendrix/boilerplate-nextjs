@@ -3,7 +3,7 @@ import Router from 'next/router'
 import { useSession } from 'next-auth/react'
 import { User } from '@prisma/client'
 import { Box, Button, IconButton, Typography } from '@mui/material'
-import supabase from '@/lib/supabase'
+import { useUpdateUserMutation } from '@/store/user'
 import SnackbarAlert from '@/components/SnackbarAlert'
 import UserAvatar from '@/components/UserAvatar'
 
@@ -15,29 +15,41 @@ type Props = {
 const UserProfile: React.FC<Props> = ({ user, ...rest }) => {
   const { data: session } = useSession()
   const [file, setFile] = useState<File | undefined>()
-  const [isError, setIsError] = useState(false)
+  const [isUploadError, setIsUploadError] = useState(false)
+  const [updateUser, { isLoading, isError: isUpdateError }] = useUpdateUserMutation()
   const canEdit = session?.user?.id === user.id
 
-  console.log({ canEdit })
+  const getErrorMessage = () => {
+    if (isUploadError) return 'Error uploading'
+    if (isUpdateError) return 'Error saving'
+    return null
+  }
 
   const uploadFile = async () => {
-    if (!supabase || !file) return
-    const bucket = process.env.NODE_ENV
-    const path = `${user.id}/${file.name}`
-    const { data, error } = await supabase.storage.from(bucket).upload(path, file)
-    setIsError(Boolean(error))
-    console.log({ data }) // TODO save path to db
+    if (!file) return
+    const formData = new FormData()
+    formData.append('file', file)
+    try {
+      const res = await fetch('/api/storage', {
+        method: 'POST',
+        body: formData
+      })
+      const path = await res.json()
+      await updateUser({ id: user.id, bucketImage: path })
+    } catch (error) {
+      setIsUploadError(true)
+    }
   }
 
   useEffect(() => { file && uploadFile() }, [file])
 
   return (
   <Box {...rest}>
-      {isError && <SnackbarAlert content="Upload failed" />}
+      <SnackbarAlert content={getErrorMessage()} />
     <Box display="flex" alignItems="center" mb={2}>
         <IconButton
           component="label"
-          disabled={!canEdit}
+          disabled={!canEdit || isLoading}
           sx={{ mr: 3 }}
         >
           <UserAvatar user={user} />

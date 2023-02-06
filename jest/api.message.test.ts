@@ -19,7 +19,7 @@ describe('/api/message', () => {
     const content = `${user?.name} says hello world!`
     const { req, res } = createMocks({ method: 'POST', body: { content } })
     await handle(req, res)
-    expect(res._getStatusCode()).toBe(200)
+    expect(res._getStatusCode()).toBe(201)
     expect(JSON.parse(res._getData())).toEqual(
       expect.objectContaining({ content }),
     )
