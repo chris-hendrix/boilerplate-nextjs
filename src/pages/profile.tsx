@@ -7,7 +7,7 @@ const ProfilePage: React.FC = () => {
   if (status === 'loading') return null
   if (!session?.user) return null
   return (
-    <Layout>
+    <Layout display="flex" justifyContent="center" width="100%">
       <UserProfile user={session.user} />
     </Layout>
   )

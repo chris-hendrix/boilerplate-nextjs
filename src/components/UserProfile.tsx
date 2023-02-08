@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import Router from 'next/router'
 import { useSession } from 'next-auth/react'
 import { User } from '@prisma/client'
-import { Box, Button, IconButton, Typography } from '@mui/material'
+import { Box, Button, IconButton, Stack, Typography } from '@mui/material'
 import { useUpdateUserMutation } from '@/store/user'
 import SnackbarAlert from '@/components/SnackbarAlert'
 import UserAvatar from '@/components/UserAvatar'
@@ -44,36 +44,45 @@ const UserProfile: React.FC<Props> = ({ user, ...rest }) => {
   useEffect(() => { file && uploadFile() }, [file])
 
   return (
-  <Box {...rest}>
+    <Box {...rest}>
       <SnackbarAlert content={getErrorMessage()} />
-    <Box display="flex" alignItems="center" mb={2}>
-        <IconButton
-          component="label"
-          disabled={!canEdit || isLoading}
-          sx={{ mr: 3 }}
+      <Stack
+        width="400px"
+        spacing={2}
+        alignItems="center"
+        component="form"
+        onSubmit={() => console.log('TODO')}
+      >
+        <Box display="flex" alignItems="center" mb={2}>
+          <IconButton
+            component="label"
+            disabled={!canEdit || isLoading}
+            sx={{ mr: 3 }}
+          >
+            <UserAvatar user={user} />
+            <input
+              type="file"
+              accept="image/x-png,image/gif,image/jpeg"
+              defaultValue={file?.name}
+              onChange={(e) => setFile(e.target.files?.[0])}
+              hidden
+            />
+          </IconButton>
+          <Typography variant="h3">{user.name}</Typography>
+        </Box>
+        <Typography>{`email: ${user.email}`}</Typography>
+        <Typography>{`joined: ${user.createdAt}`}</Typography>
+        <Typography>{`admin: ${user.admin}`}</Typography>
+        <Button
+          onClick={() => Router.push('/users')}
+          variant="contained"
+          sx={{ mt: 2 }}
         >
-          <UserAvatar user={user} />
-          <input
-            type="file"
-            accept="image/x-png,image/gif,image/jpeg"
-            defaultValue={file?.name}
-            onChange={(e) => setFile(e.target.files?.[0])}
-            hidden
-          />
-        </IconButton>
-      <Typography variant="h3">{user.name}</Typography>
+          Back
+        </Button>
+      </Stack>
+
     </Box>
-    <Typography>{`email: ${user.email}`}</Typography>
-    <Typography>{`joined: ${user.createdAt}`}</Typography>
-    <Typography>{`admin: ${user.admin}`}</Typography>
-    <Button
-      onClick={() => Router.push('/users')}
-      variant="contained"
-      sx={{ mt: 2 }}
-    >
-      Back
-    </Button>
-  </Box>
   )
 }
 
