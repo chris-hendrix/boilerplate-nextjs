@@ -18,7 +18,12 @@ export default async function handle(
     const path = req.query.path as string
     const { data, error } = await supabase.storage.from(bucket).download(path)
     if (error) return res.status(400).json('Error downloading file')
-    return res.status(200).send(data)
+    res.writeHead(200, {
+      'Content-Type': data.type,
+      'Content-Length': data.size
+    })
+    const arrayBuffer = await data.arrayBuffer()
+    return res.end(Buffer.from(arrayBuffer))
   }
 
   // POST file
@@ -26,9 +31,11 @@ export default async function handle(
     const user = await getSessionUser(req, res)
     if (!user) return res
 
-    const { filename, buffer } = await getFile(req)
+    const { filename, buffer, mimetype } = await getFile(req)
     const path = `${user.id}/${filename}`
-    const { data, error } = await supabase.storage.from(bucket).upload(path, buffer,)
+    const { data, error } = await supabase.storage
+      .from(bucket).upload(path, buffer, { contentType: mimetype })
+
     if (error) return res.status(400).json('Upload failed')
     return res.status(200).json(data.path)
   }
