@@ -14,20 +14,20 @@ type Props = {
 const TextInput: React.FC<Props> = ({
   name = undefined,
   register = undefined,
-  errors = undefined,
   getValues = undefined,
+  errors = undefined,
   ...rest
 }) => {
   const getProps = () => {
     const props = {
       fullWidth: true,
-      error: Boolean(errors?.name),
-      helperText: errors?.name?.message as string || undefined
+      error: name ? Boolean(errors?.[name]) : undefined,
+      helperText: name ? errors?.[name]?.message as string : undefined
     }
     if (name === 'name') {
       return {
         ...props,
-        label: 'Name',
+        label: 'Name*',
         ...!register ? {} : register(name, {
           required: 'Name is required',
           validate: (value: string) => value.length > 2 || 'Too short'
@@ -38,7 +38,7 @@ const TextInput: React.FC<Props> = ({
     if (name === 'email') {
       return {
         ...props,
-        label: 'Email',
+        label: 'Email*',
         ...!register ? {} : register(name, {
           required: 'Email is required',
           validate: (value: string) => isEmail(value) || 'Invalid email'
@@ -49,7 +49,7 @@ const TextInput: React.FC<Props> = ({
     if (name === 'password') {
       return {
         ...props,
-        label: 'Password',
+        label: 'Password*',
         ...!register ? {} : register(name, {
           required: 'Password is required',
           validate: (value: string) => isStrongPassword(value) || 'Weak password'

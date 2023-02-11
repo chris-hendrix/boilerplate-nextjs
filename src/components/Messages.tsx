@@ -1,9 +1,8 @@
 import { useState } from 'react'
-import { useSession } from 'next-auth/react'
 import { Box, Chip, IconButton, TextField, Tooltip } from '@mui/material'
 import { Send } from '@mui/icons-material'
 
-import { useAddMessageMutation, useGetMessagesQuery } from '@/store/message'
+import { useAddMessageMutation, useGetMessagesQuery, useGetSessionQuery } from '@/store'
 
 import UserAvatar from './UserAvatar'
 
@@ -16,7 +15,7 @@ const Messages: React.FC<Props> = ({ iconsOnly = false, ...rest }) => {
   const [content, setContent] = useState<string>('')
   const { data: messages, isLoading } = useGetMessagesQuery()
   const [addMessage, { isLoading: isSending }] = useAddMessageMutation()
-  const { data: session } = useSession()
+  const { data: session } = useGetSessionQuery()
 
   if (isLoading || !messages) return null
 

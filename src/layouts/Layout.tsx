@@ -1,8 +1,9 @@
 import { ReactNode, useContext } from 'react'
 import { useRouter } from 'next/router'
-import { signIn, signOut, useSession } from 'next-auth/react'
+import { signIn, signOut } from 'next-auth/react'
 import { AppBar, Box, IconButton, MenuItem, Paper, Toolbar, Typography } from '@mui/material'
 import { ChatBubble, ChevronRight } from '@mui/icons-material'
+import { useGetSessionQuery } from '@/store'
 import { LayoutContext } from './LayoutContext'
 import UserAvatar from '../components/UserAvatar'
 import Messages from '../components/Messages'
@@ -22,7 +23,7 @@ type Props = {
 }
 
 const Layout: React.FC<Props> = ({ children, ...rest }) => {
-  const { data: session, status } = useSession()
+  const { data: session, isLoading } = useGetSessionQuery()
   const { chatOpen, setChatOpen } = useContext(LayoutContext)
   const barWidth = chatOpen ? barOpenWidth : barClosedWidth
   const router = useRouter()
@@ -30,7 +31,7 @@ const Layout: React.FC<Props> = ({ children, ...rest }) => {
   const currentPage = pages.find((page) => page.route === router.route)
 
   const renderMenuItems = () => {
-    if (status === 'loading') return null
+    if (isLoading) return null
     if (!session?.user) {
       return (
         <>

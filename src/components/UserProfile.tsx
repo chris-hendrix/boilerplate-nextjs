@@ -1,9 +1,8 @@
 import { useEffect, useState } from 'react'
 import Router from 'next/router'
-import { useSession } from 'next-auth/react'
 import { User } from '@prisma/client'
 import { Box, Button, IconButton, Stack, Typography } from '@mui/material'
-import { useUpdateUserMutation } from '@/store/user'
+import { useUpdateUserMutation, useUploadFileMutation, useGetSessionQuery } from '@/store'
 import SnackbarAlert from '@/components/SnackbarAlert'
 import UserAvatar from '@/components/UserAvatar'
 
@@ -13,11 +12,21 @@ type Props = {
 }
 
 const UserProfile: React.FC<Props> = ({ user, ...rest }) => {
-  const { data: session } = useSession()
+  const { data: session } = useGetSessionQuery()
   const [file, setFile] = useState<File | undefined>()
-  const [isUploadError, setIsUploadError] = useState(false)
-  const [updateUser, { isLoading, isError: isUpdateError }] = useUpdateUserMutation()
+
+  const [updateUser, {
+    isLoading: isUserUpdating,
+    isError: isUpdateError
+  }] = useUpdateUserMutation()
+
+  const [uploadFile, {
+    isLoading: isFileUploading,
+    isError: isUploadError
+  }] = useUploadFileMutation()
+
   const canEdit = session?.user?.id === user.id
+  const isLoading = isUserUpdating || isFileUploading
 
   const getErrorMessage = () => {
     if (isUploadError) return 'Error uploading'
@@ -25,23 +34,15 @@ const UserProfile: React.FC<Props> = ({ user, ...rest }) => {
     return null
   }
 
-  const uploadFile = async () => {
+  const uploadBucketImage = async () => {
     if (!file) return
     const formData = new FormData()
     formData.append('file', file)
-    try {
-      const res = await fetch('/api/storage', {
-        method: 'POST',
-        body: formData
-      })
-      const path = await res.json()
-      await updateUser({ id: user.id, bucketImage: path })
-    } catch (error) {
-      setIsUploadError(true)
-    }
+    const res = await uploadFile(formData)
+    if ('data' in res) await updateUser({ id: user.id, bucketImage: res.data })
   }
 
-  useEffect(() => { file && uploadFile() }, [file])
+  useEffect(() => { uploadBucketImage() }, [file])
 
   return (
     <Box {...rest}>

@@ -1,9 +1,9 @@
 import { GetServerSideProps } from 'next'
 import Router from 'next/router'
-import { useSession } from 'next-auth/react'
 import { User } from '@prisma/client'
 import { Card, CardActionArea, Stack, Typography } from '@mui/material'
 import prisma from '@/lib/prisma'
+import { useGetSessionQuery } from '@/store'
 import Layout from '@/layouts/Layout'
 import UserAvatar from '@/components/UserAvatar'
 
@@ -18,7 +18,7 @@ type Props = {
   users: User[]
 }
 const UsersPage: React.FC<Props> = ({ users }) => {
-  const { data: session } = useSession()
+  const { data: session } = useGetSessionQuery()
 
   return (
   <Layout display="flex" justifyContent="center">
