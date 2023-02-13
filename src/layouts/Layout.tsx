@@ -55,7 +55,7 @@ const Layout: React.FC<Props> = ({ children, ...rest }) => {
     return (
       <>
         <IconButton onClick={() => router.push('/profile')}>
-          <UserAvatar user={session?.user} />
+          <UserAvatar userId={session?.user?.id} />
         </IconButton>
         <MenuItem className="logoutMenuButton" onClick={() => signOut()} color="inherit">Logout</MenuItem>
       </>

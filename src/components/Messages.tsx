@@ -30,7 +30,7 @@ const Messages: React.FC<Props> = ({ iconsOnly = false, ...rest }) => {
         <Box key={message.id} mb={2}>
           <Tooltip title={`${message?.user?.name}${iconsOnly ? `: ${message?.content}` : ''}`}>
             <Chip
-              avatar={<UserAvatar user={message?.user} />}
+              avatar={<UserAvatar userId={message?.user?.id} />}
               label={!iconsOnly && message.content}
             />
           </Tooltip>
@@ -41,7 +41,7 @@ const Messages: React.FC<Props> = ({ iconsOnly = false, ...rest }) => {
 
   const renderMessageInput = () => (
     <Box display="flex" alignItems="center">
-      <UserAvatar user={session?.user} />
+      <UserAvatar userId={session?.user?.id} />
       <TextField
         className="messageInput"
         fullWidth

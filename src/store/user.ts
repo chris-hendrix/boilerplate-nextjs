@@ -4,7 +4,12 @@ import { User } from '@prisma/client'
 export const userApi = createApi({
   reducerPath: 'userApi',
   baseQuery: fetchBaseQuery({ baseUrl: '/api' }),
+  tagTypes: ['User'],
   endpoints: (build) => ({
+    getUser: build.query<User, string>({
+      query: (id) => `user/${id}`,
+      providesTags: (_result, _err, id) => [{ type: 'User', id }],
+    }),
     addUser: build.mutation<User, Partial<User>>({
       query: (body) => ({
         url: 'user',
@@ -18,9 +23,9 @@ export const userApi = createApi({
         method: 'PUT',
         body: { ...data, id: undefined }
       }),
-      // invalidatesTags: (user) => [{ type: 'User', id: user?.id }],
+      invalidatesTags: (user) => [{ type: 'User', id: user?.id }],
     })
   })
 })
 
-export const { useAddUserMutation, useUpdateUserMutation } = userApi
+export const { useGetUserQuery, useAddUserMutation, useUpdateUserMutation } = userApi

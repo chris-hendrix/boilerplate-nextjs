@@ -1,19 +1,21 @@
 import { useEffect, useState } from 'react'
 import Router from 'next/router'
-import { User } from '@prisma/client'
 import { Box, Button, IconButton, Stack, Typography } from '@mui/material'
-import { useUpdateUserMutation, useUploadFileMutation, useGetSessionQuery } from '@/store'
+import { useUpdateUserMutation, useUploadFileMutation, useGetSessionQuery, useGetUserQuery } from '@/store'
 import SnackbarAlert from '@/components/SnackbarAlert'
 import UserAvatar from '@/components/UserAvatar'
 
 type Props = {
-  user: Partial<User>,
+  userId: string,
   [x: string]: unknown
 }
 
-const UserProfile: React.FC<Props> = ({ user, ...rest }) => {
+const UserProfile: React.FC<Props> = ({ userId, ...rest }) => {
+  const { data: user, isLoading: isUserLoading } = useGetUserQuery(userId, { skip: !userId })
   const { data: session } = useGetSessionQuery()
   const [file, setFile] = useState<File | undefined>()
+
+  console.log({ user })
 
   const [updateUser, {
     isLoading: isUserUpdating,
@@ -25,9 +27,6 @@ const UserProfile: React.FC<Props> = ({ user, ...rest }) => {
     isError: isUploadError
   }] = useUploadFileMutation()
 
-  const canEdit = session?.user?.id === user.id
-  const isLoading = isUserUpdating || isFileUploading
-
   const getErrorMessage = () => {
     if (isUploadError) return 'Error uploading'
     if (isUpdateError) return 'Error saving'
@@ -35,7 +34,7 @@ const UserProfile: React.FC<Props> = ({ user, ...rest }) => {
   }
 
   const uploadBucketImage = async () => {
-    if (!file) return
+    if (!file || !user) return
     const formData = new FormData()
     formData.append('file', file)
     const res = await uploadFile(formData)
@@ -43,6 +42,10 @@ const UserProfile: React.FC<Props> = ({ user, ...rest }) => {
   }
 
   useEffect(() => { uploadBucketImage() }, [file])
+
+  if (isUserLoading || !user) return null
+  const canEdit = session?.user?.id === user.id
+  const isLoading = isUserUpdating || isFileUploading
 
   return (
     <Box {...rest}>
@@ -60,7 +63,7 @@ const UserProfile: React.FC<Props> = ({ user, ...rest }) => {
             disabled={!canEdit || isLoading}
             sx={{ mr: 3 }}
           >
-            <UserAvatar user={user} />
+            <UserAvatar userId={user?.id} />
             <input
               type="file"
               accept="image/x-png,image/gif,image/jpeg"

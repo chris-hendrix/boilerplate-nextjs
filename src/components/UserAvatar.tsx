@@ -1,19 +1,31 @@
+import { useEffect } from 'react'
 import { Avatar } from '@mui/material'
-import { User } from '@prisma/client'
-import { useGetFileQuery } from '@/store'
+import { useGetFileQuery, useGetUserQuery } from '@/store'
 
 type Props = {
-  user: Partial<User> | null | undefined,
+  userId: string | null | undefined,
   [x: string]: unknown
 }
 
-const UserAvatar: React.FC<Props> = ({ user, ...rest }) => {
+const UserAvatar: React.FC<Props> = ({ userId, ...rest }) => {
+  const { data: user, isLoading: isUserLoading } = useGetUserQuery(userId || '', { skip: !userId })
+
   const {
     data: bucketImageUrl,
-    isLoading: isBucketImageUrlLoading
+    isLoading: isBucketImageUrlLoading,
+    refetch: refetchBucketImageUrl,
   } = useGetFileQuery(user?.bucketImage as string, { skip: !user?.bucketImage })
 
-  if (!user || isBucketImageUrlLoading) return null
+  const isLoading = isUserLoading || isBucketImageUrlLoading
+
+  useEffect(() => {
+    if (isUserLoading) return
+    if (isBucketImageUrlLoading) return
+    if (!user) return
+    refetchBucketImageUrl()
+  }, [isUserLoading, user?.bucketImage])
+
+  if (!user || isLoading) return null
 
   const { name, image } = user
   const imageUrl = bucketImageUrl || image

@@ -32,7 +32,7 @@ const UsersPage: React.FC<Props> = ({ users }) => {
             }
             sx={{ p: 3, display: 'flex', justifyContent: 'flex-start' }}
           >
-            <UserAvatar user={user} sx={{ mr: 2 }} />
+            <UserAvatar userId={user.id} sx={{ mr: 2 }} />
             <Typography variant="h6">{user.name}</Typography>
           </CardActionArea>
         </Card>

@@ -1,7 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit'
 import { setupListeners } from '@reduxjs/toolkit/query/react'
 import { messageApi, useGetMessagesQuery, useAddMessageMutation } from './message'
-import { userApi, useAddUserMutation, useUpdateUserMutation } from './user'
+import { userApi, useGetUserQuery, useAddUserMutation, useUpdateUserMutation } from './user'
 import { sessionApi, useGetSessionQuery } from './session'
 import { storageApi, useGetFileQuery, useUploadFileMutation } from './storage'
 
@@ -24,17 +24,10 @@ const store = configureStore({
 setupListeners(store.dispatch)
 
 export {
-  // message
-  useGetMessagesQuery,
-  useAddMessageMutation,
-  // user
-  useAddUserMutation,
-  useUpdateUserMutation,
-  // session
+  useGetMessagesQuery, useAddMessageMutation,
+  useGetUserQuery, useAddUserMutation, useUpdateUserMutation,
   useGetSessionQuery,
-  // storage
-  useGetFileQuery,
-  useUploadFileMutation
+  useGetFileQuery, useUploadFileMutation
 }
 
 export default store

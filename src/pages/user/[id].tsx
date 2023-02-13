@@ -16,7 +16,7 @@ type Props = {
 
 const UserPage: React.FC<Props> = ({ user }) => (
   <Layout>
-    <UserProfile user={user} />
+    {user?.id && <UserProfile userId={user.id} />}
   </Layout>
 )
 

@@ -8,7 +8,7 @@ const ProfilePage: React.FC = () => {
   if (!session?.user) return null
   return (
     <Layout display="flex" justifyContent="center" width="100%">
-      <UserProfile user={session.user} />
+      <UserProfile userId={session.user.id} />
     </Layout>
   )
 }
