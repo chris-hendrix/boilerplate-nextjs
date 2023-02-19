@@ -22,6 +22,7 @@ const UserAvatar: React.FC<Props> = ({ userId, ...rest }) => {
     if (isUserLoading) return
     if (isBucketImageUrlLoading) return
     if (!user) return
+    if (!bucketImageUrl) return
     refetchBucketImageUrl()
   }, [isUserLoading, user?.bucketImage])
 

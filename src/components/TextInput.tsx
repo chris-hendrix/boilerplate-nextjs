@@ -50,6 +50,7 @@ const TextInput: React.FC<Props> = ({
       return {
         ...props,
         label: 'Password*',
+        type: 'password',
         ...!register ? {} : register(name, {
           required: 'Password is required',
           validate: (value: string) => isStrongPassword(value) || 'Weak password'
@@ -61,6 +62,7 @@ const TextInput: React.FC<Props> = ({
       return {
         ...props,
         label: 'Password confirmation',
+        type: 'password',
         ...!register || !getValues ? {} : register(name, {
           validate: (value: string) => getValues()?.password === value || 'Password does not match'
         })
