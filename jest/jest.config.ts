@@ -5,8 +5,7 @@ const jestConfig = {
   testEnvironment: 'node',
   transform: { '^.+\\.ts?$': 'ts-jest' },
   transformIgnorePatterns: ['<rootDir>/node_modules/'],
-  moduleNameMapper: { '@/*/(.*)': '<rootDir>/src/$1' },
-  // setupFilesAfterEnv: ['<rootDir>/jest/mocks.ts']
+  moduleNameMapper: { '@/*/(.*)': '<rootDir>/src/$1' }
 }
 
 export default jestConfig

@@ -20,7 +20,7 @@ export default async function handle(
 
   // PUT user
   if (req.method === 'PUT') {
-    if (!await userMatchesSession(userId, req, res)) return res
+    if (!await userMatchesSession(userId, req, res)) return res.status(405).json('Not authorized')
     if (!req.body) return res.status(400).json('No update args provided')
     const data = req.body as Prisma.UserUpdateArgs
     const updatedUser = await prisma.user.update({ where: { id: userId }, data })
@@ -29,7 +29,7 @@ export default async function handle(
 
   // DELETE user
   if (req.method === 'DELETE') {
-    if (!await userMatchesSession(userId, req, res)) return res
+    if (!await userMatchesSession(userId, req, res)) return res.status(405).json('Not authorized')
     const deletedUser = await prisma.user.delete({ where: { id: userId } })
     return res.status(204).json(deletedUser)
   }
