@@ -1,24 +1,22 @@
-import { UseFormRegister, FieldErrorsImpl, FieldValues, UseFormGetValues } from 'react-hook-form'
+import { UseFormReturn } from 'react-hook-form'
 import { TextField } from '@mui/material'
 import isEmail from 'validator/lib/isEmail'
 import isStrongPassword from 'validator/lib/isStrongPassword'
 
 type Props = {
   name?: string | undefined,
-  register?: UseFormRegister<FieldValues> | undefined,
-  errors?: Partial<FieldErrorsImpl<{ [x: string]: any }>> | undefined,
-  getValues?: UseFormGetValues<FieldValues> | undefined
+  form?: UseFormReturn | undefined
   [x: string]: unknown
 }
 
 const TextInput: React.FC<Props> = ({
   name = undefined,
-  register = undefined,
-  getValues = undefined,
-  errors = undefined,
+  form = undefined,
   ...rest
 }) => {
   const getProps = () => {
+    if (!form) return { fullWidth: true }
+    const { register, getValues, formState: { errors } } = form
     const props = {
       fullWidth: true,
       error: name ? Boolean(errors?.[name]) : undefined,

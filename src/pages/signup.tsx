@@ -14,10 +14,8 @@ import Layout from '@/layouts/Layout'
 
 const SignupPage: React.FC = () => {
   const [addUser, { isLoading, isError, isSuccess, error }] = useAddUserMutation()
-  const { register, getValues, formState: { errors }, handleSubmit } = useForm({ mode: 'onChange' })
+  const form = useForm({ mode: 'onChange' })
   const [signupWithGoogle, setSignupWithGoogle] = useState(true)
-
-  const textInputProps = { errors, register, getValues }
 
   const onSubmit = async (data: { [x: string]: unknown }) => { await addUser(data) }
   isSuccess && Router.push('/api/auth/signin')
@@ -31,14 +29,14 @@ const SignupPage: React.FC = () => {
           spacing={2}
           alignItems="center"
           component="form"
-          onSubmit={handleSubmit(onSubmit)}
+          onSubmit={form.handleSubmit(onSubmit)}
         >
           {!signupWithGoogle && (
             <>
-              <TextInput name="name" {...textInputProps} />
-              <TextInput name="email" {...textInputProps} />
-              <TextInput name="password" {...textInputProps} />
-              <TextInput name="cpassword" {...textInputProps} />
+              <TextInput name="name" form={form} />
+              <TextInput name="email" form={form} />
+              <TextInput name="password" form={form} />
+              <TextInput name="cpassword" form={form} />
               <Button
                 className="signUpButton"
                 type="submit"
@@ -64,7 +62,7 @@ const SignupPage: React.FC = () => {
               className="signUpWithEmailButton"
               onClick={() => setSignupWithGoogle(false)}
             >
-              Or sign in with email
+              Or sign up with email
             </Button>}
         </Stack>
       </Layout>
