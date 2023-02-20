@@ -1,10 +1,8 @@
 import { GetServerSideProps } from 'next'
-import Router from 'next/router'
 import prisma from '@/lib/prisma'
 import { User } from '@prisma/client'
-import { Box, Button, Typography } from '@mui/material'
-import Layout from '@/components/Layout'
-import UserAvatar from '@/components/UserAvatar'
+import Layout from '@/layouts/Layout'
+import UserProfile from '@/components/UserProfile'
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const id = context?.params?.id as string
@@ -18,22 +16,8 @@ type Props = {
 
 const UserPage: React.FC<Props> = ({ user }) => (
   <Layout>
-    <Box display="flex" alignItems="center" mb={2}>
-      <UserAvatar user={user} sx={{ mr: 3 }} />
-      <Typography variant="h3">{user.name}</Typography>
-    </Box>
-    <Typography>{`email: ${user.email}`}</Typography>
-    <Typography>{`joined: ${user.createdAt}`}</Typography>
-    <Typography>{`admin: ${user.admin}`}</Typography>
-    <Button
-      onClick={() => Router.push('/users')}
-      variant="contained"
-      sx={{ mt: 2 }}
-    >
-      Back
-    </Button>
+    {user?.id && <UserProfile userId={user.id} />}
   </Layout>
-
 )
 
 export default UserPage

@@ -24,7 +24,7 @@ module.exports = {
     },
     ecmaVersion: 'latest',
     sourceType: 'module',
-    project: './tsconfig.json'
+    project: ['./tsconfig.json', './cypress/tsconfig.json']
   },
   plugins: [
     'react',
@@ -38,9 +38,11 @@ module.exports = {
       'error',
       { 'argsIgnorePattern': '^_', 'varsIgnorePattern': '^_', 'caughtErrorsIgnorePattern': '^_' },
     ],
+    '@typescript-eslint/no-use-before-define': 'off', // allows functions calls before definition
     'jsx-quotes': ['error', 'prefer-double'], // force double quotes for jsx props
     'object-curly-newline': 'off', // allows objects on one line
     'react/prop-types': 'off', // no need for propTypes in typescript
     'react/react-in-jsx-scope': 'off', // no need to import React in jsx files
+    'react-hooks/exhaustive-deps': 'off' // no need for all dependencies for useEffect
   }
 };

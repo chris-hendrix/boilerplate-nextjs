@@ -6,7 +6,7 @@ import CredentialsProvider from 'next-auth/providers/credentials'
 import prisma from '@/lib/prisma'
 import bcrypt from 'bcrypt'
 
-const options: NextAuthOptions = {
+export const authOptions: NextAuthOptions = {
   providers: [
     CredentialsProvider({
       name: 'Credentials',
@@ -42,4 +42,4 @@ const options: NextAuthOptions = {
   }
 }
 
-export default NextAuth(options)
+export default NextAuth(authOptions)
