@@ -18,5 +18,5 @@ export default async function handle(
     result = await prisma.user.create({ data: { email, password: hash } })
   }
 
-  return res.status(result ? 200 : 400).json(result || 'invalid request')
+  return res.status(result ? 200 : 400).json(result || 'Invalid request')
 }

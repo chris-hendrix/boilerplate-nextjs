@@ -3,7 +3,7 @@ import Head from 'next/head'
 import Image from 'next/image'
 import { Box } from '@mui/material'
 
-import Layout, { PAGES } from '@/components/Layout'
+import Layout, { PAGES } from '@/layouts/Layout'
 
 const HomePage: React.FC = () => {
   const { route } = useRouter()

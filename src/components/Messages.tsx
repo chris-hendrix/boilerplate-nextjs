@@ -1,9 +1,8 @@
 import { useState } from 'react'
-import { useSession } from 'next-auth/react'
 import { Box, Chip, IconButton, TextField, Tooltip } from '@mui/material'
 import { Send } from '@mui/icons-material'
 
-import { useAddMessageMutation, useGetMessagesQuery } from '@/store/message'
+import { useAddMessageMutation, useGetMessagesQuery, useGetSessionQuery } from '@/store'
 
 import UserAvatar from './UserAvatar'
 
@@ -16,12 +15,12 @@ const Messages: React.FC<Props> = ({ iconsOnly = false, ...rest }) => {
   const [content, setContent] = useState<string>('')
   const { data: messages, isLoading } = useGetMessagesQuery()
   const [addMessage, { isLoading: isSending }] = useAddMessageMutation()
-  const { data: session } = useSession()
+  const { data: session } = useGetSessionQuery()
 
   if (isLoading || !messages) return null
 
   const sendMessage = async () => {
-    await addMessage({ content, user: session?.user })
+    await addMessage({ content })
     setContent('')
   }
 
@@ -31,7 +30,7 @@ const Messages: React.FC<Props> = ({ iconsOnly = false, ...rest }) => {
         <Box key={message.id} mb={2}>
           <Tooltip title={`${message?.user?.name}${iconsOnly ? `: ${message?.content}` : ''}`}>
             <Chip
-              avatar={<UserAvatar user={message?.user} />}
+              avatar={<UserAvatar userId={message?.user?.id} />}
               label={!iconsOnly && message.content}
             />
           </Tooltip>
@@ -42,7 +41,7 @@ const Messages: React.FC<Props> = ({ iconsOnly = false, ...rest }) => {
 
   const renderMessageInput = () => (
     <Box display="flex" alignItems="center">
-      <UserAvatar user={session?.user} />
+      <UserAvatar userId={session?.user?.id} />
       <TextField
         className="messageInput"
         fullWidth

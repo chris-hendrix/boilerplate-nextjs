@@ -1,11 +1,12 @@
 import { ReactNode, useContext } from 'react'
 import { useRouter } from 'next/router'
-import { signIn, signOut, useSession } from 'next-auth/react'
+import { signIn, signOut } from 'next-auth/react'
 import { AppBar, Box, IconButton, MenuItem, Paper, Toolbar, Typography } from '@mui/material'
 import { ChatBubble, ChevronRight } from '@mui/icons-material'
+import { useGetSessionQuery } from '@/store'
 import { LayoutContext } from './LayoutContext'
-import UserAvatar from './UserAvatar'
-import Messages from './Messages'
+import UserAvatar from '../components/UserAvatar'
+import Messages from '../components/Messages'
 
 const barOpenWidth = 400
 const barClosedWidth = 40
@@ -22,7 +23,7 @@ type Props = {
 }
 
 const Layout: React.FC<Props> = ({ children, ...rest }) => {
-  const { data: session, status } = useSession()
+  const { data: session, isLoading } = useGetSessionQuery()
   const { chatOpen, setChatOpen } = useContext(LayoutContext)
   const barWidth = chatOpen ? barOpenWidth : barClosedWidth
   const router = useRouter()
@@ -30,20 +31,31 @@ const Layout: React.FC<Props> = ({ children, ...rest }) => {
   const currentPage = pages.find((page) => page.route === router.route)
 
   const renderMenuItems = () => {
-    if (status === 'loading') return null
+    if (isLoading) return null
     if (!session?.user) {
       return (
         <>
-          <MenuItem className="signUpMenuButton" onClick={() => router.push('/signup')}>Sign up</MenuItem>
-          <MenuItem className="loginMenuButton" onClick={() => signIn()} color="inherit">Login</MenuItem>
+          <MenuItem
+            className="signUpMenuButton"
+            onClick={() => router.push('/signup')}
+            sx={{ bgcolor: 'secondary.main' }}
+          >
+            Sign up
+          </MenuItem>
+          <MenuItem
+            className="loginMenuButton"
+            onClick={() => signIn()}
+          >
+            Login
+          </MenuItem>
         </>
       )
     }
 
     return (
       <>
-        <IconButton>
-          <UserAvatar user={session?.user} />
+        <IconButton onClick={() => router.push('/profile')}>
+          <UserAvatar userId={session?.user?.id} />
         </IconButton>
         <MenuItem className="logoutMenuButton" onClick={() => signOut()} color="inherit">Logout</MenuItem>
       </>
@@ -55,7 +67,7 @@ const Layout: React.FC<Props> = ({ children, ...rest }) => {
     <Box height={`calc(100vh - 3px - ${appBarHeight}px)`} display="flex" flexDirection="column" component="main">
       <AppBar position="static" >
         <Toolbar sx={{ height: appBarHeight, alignContent: 'center' }}>
-          <Box display="flex" flexGrow={1}>
+          <Box display="flex" flexGrow={1} sx={{ '& .Mui-selected': { fontWeight: 600 } }}>
             <MenuItem onClick={() => router.push('/')}>
               <Typography variant="h6">
                 Next.js Boilerplate
