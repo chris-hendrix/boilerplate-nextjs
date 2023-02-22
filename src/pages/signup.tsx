@@ -4,7 +4,7 @@ import Router from 'next/router'
 import { useForm } from 'react-hook-form'
 import { Button, Stack } from '@mui/material'
 import { Google } from '@mui/icons-material'
-import getBaseQueryErrorMessage from '@/lib/error'
+import getBaseQueryErrorMessage from '@/lib-server/error'
 
 import SnackbarAlert from '@/components/SnackbarAlert'
 import TextInput from '@/components/TextInput'

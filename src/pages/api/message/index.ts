@@ -1,7 +1,7 @@
 import prisma from '@/lib/prisma'
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { MessageWithUser } from '@/types'
-import { getSessionUser } from '@/lib/session'
+import { getSessionUser } from '@/lib-server/session'
 
 export default async function handle(
   req: NextApiRequest,

@@ -1,13 +1,13 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import supabase from '@/lib/supabase'
-import getFile from '@/lib/file'
-import { getSessionUser } from '@/lib/session'
+import getFile from '@/lib-server/file'
+import { getSessionUser } from '@/lib-server/session'
 
 export const config = { api: { bodyParser: false } }
 
 export default async function handle(
   req: NextApiRequest,
-  res: NextApiResponse<{ path: string } | string | Blob>
+  res: NextApiResponse<{ path: string } | string | Blob>,
 ) {
   // must have session to upload
   if (!supabase) return res.status(400).json('Storage not set up')

@@ -23,6 +23,7 @@
     "@components": ["components"],
     "@layouts": ["layouts"],
     "@lib": ["lib"],
+    "@lib-server": ["lib-server"],
     "@pages": ["pages"],
     "@store": ["store"],
   },

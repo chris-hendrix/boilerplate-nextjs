@@ -1,7 +1,7 @@
 import prisma from '@/lib/prisma'
 import { Prisma, User } from '@prisma/client'
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { userMatchesSession } from '@/lib/session'
+import { userMatchesSession } from '@/lib-server/session'
 
 export default async function handle(
   req: NextApiRequest,
