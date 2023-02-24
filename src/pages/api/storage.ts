@@ -1,8 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import supabase from '@/lib/supabase'
 import getFile from '@/utils/file'
-import { getSessionUser } from '@/utils/session'
-import { ApiError, apiHandler } from '@/utils/api'
+import { ApiError, apiHandler, withSessionUser } from '@/utils/api'
 
 export const config = { api: { bodyParser: false } }
 
@@ -29,7 +28,7 @@ const handle = apiHandler(async (
 
   // POST file
   if (req.method === 'POST') {
-    const user = await getSessionUser(req, res)
+    const user = await withSessionUser(req, res)
     if (!user) return res
 
     const { filename, buffer, mimetype } = await getFile(req)

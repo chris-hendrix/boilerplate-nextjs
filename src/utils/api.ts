@@ -3,7 +3,7 @@
 import type { NextApiRequest, NextApiResponse, NextApiHandler } from 'next'
 import { getServerSession } from 'next-auth'
 import prisma from '@/lib/prisma'
-import { authOptions } from '../pages/api/auth/[...nextauth]'
+import { authOptions } from '@/pages/api/auth/[...nextauth]'
 
 export class ApiError extends Error {
   public readonly statusCode: number
@@ -25,8 +25,8 @@ export const apiHandler = (handler: NextApiHandler) => async (
   method && console.info('Method: ', method)
   url && console.info('Path:   ', url)
   body && console.info('Body:   ', body)
+  console.info('---')
   try {
-    console.info('---')
     return handler(req, res)
   } catch (error: any) {
     const isProd = process.env.NODE_ENV === 'production'
