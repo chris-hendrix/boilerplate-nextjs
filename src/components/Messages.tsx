@@ -16,6 +16,7 @@ const Messages: React.FC<Props> = ({ iconsOnly = false, ...rest }) => {
   const { data: messages, isLoading } = useGetMessagesQuery()
   const [addMessage, { isLoading: isSending }] = useAddMessageMutation()
   const { data: session } = useGetSessionQuery()
+  const user = session?.user || null
 
   if (isLoading || !messages) return null
 
@@ -41,13 +42,13 @@ const Messages: React.FC<Props> = ({ iconsOnly = false, ...rest }) => {
 
   const renderMessageInput = () => (
     <Box display="flex" alignItems="center">
-      <UserAvatar userId={session?.user?.id} />
+      <UserAvatar userId={user?.id} />
       <TextField
         className="messageInput"
         fullWidth
-        disabled={!session}
+        disabled={!user}
         value={content}
-        placeholder="Enter message"
+        placeholder={user ? 'Enter message' : 'Log in to send message'}
         onChange={(e) => setContent(e.target.value)}
         onKeyDown={(e) => {
           if (e.key === 'Enter') {

@@ -1,4 +1,4 @@
-import { GetServerSideProps } from 'next'
+import { GetStaticProps } from 'next'
 import Router from 'next/router'
 import { User } from '@prisma/client'
 import { Card, CardActionArea, Stack, Typography } from '@mui/material'
@@ -7,10 +7,11 @@ import { useGetSessionQuery } from '@/store'
 import Layout from '@/layouts/Layout'
 import UserAvatar from '@/components/UserAvatar'
 
-export const getServerSideProps: GetServerSideProps = async () => {
+export const getStaticProps: GetStaticProps = async () => {
   const users = await prisma.user.findMany()
   return {
     props: { users: JSON.parse(JSON.stringify(users)) },
+    revalidate: 10
   }
 }
 
