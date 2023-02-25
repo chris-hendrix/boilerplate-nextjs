@@ -86,7 +86,7 @@ jobs:
         uses: anothrNick/github-tag-action@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          DEFAULT_BUMP: patch
+          DEFAULT_BUMP: minor
           RELEASE_BRANCHES: release
           INITIAL_VERSION: '2023.0.0'
 

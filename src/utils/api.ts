@@ -20,15 +20,15 @@ const logRequest = (req: NextApiRequest) => {
   if (process.env.NODE_ENV === 'test') return
   const { method, url, body } = req
   console.info('---')
-  method && console.info('Method: ', method)
-  url && console.info('Path:   ', url)
-  body && console.info('Body:   ', body)
+  method && console.info(`Method: ${method}`)
+  url && console.info(`Path:   ${url}`)
+  body && console.info(`Body:   ${body}`)
   console.info('---')
 }
 
 const logError = (error: any) => {
   if (process.env.NODE_ENV === 'test') return
-  console.info('Error:  ', error)
+  console.info(`Error:  ${error}`)
   console.info('---')
 }
 
