@@ -1,7 +1,7 @@
 /* eslint-disable no-underscore-dangle */
 import { createMocks } from 'node-mocks-http'
 import prisma from '@/lib/prisma'
-import handle from '@/pages/api/user/[id]'
+import handler from '@/pages/api/user/[id]'
 import createGetServerSessionMock from './mocks'
 
 jest.mock('next-auth')
@@ -17,7 +17,7 @@ describe('/api/user', () => {
     const body = { name: 'Put Adams' }
     const { req, res } = createMocks({ method: 'PUT', body })
     req.query = { id: user?.id }
-    await handle(req, res)
+    await handler(req, res)
     expect(res._getStatusCode()).toBe(204)
     expect(JSON.parse(res._getData())).toEqual(
       expect.objectContaining(body),
@@ -35,8 +35,8 @@ describe('/api/user', () => {
     })
     const { req, res } = createMocks({ method: 'PUT', body })
     req.query = { id: otherUser.id }
-    await handle(req, res)
-    expect(res._getStatusCode()).toBe(405)
+    await handler(req, res)
+    expect(res._getStatusCode()).toBe(401)
   })
 
   test('cannot edit user while signed out', async () => {
@@ -49,7 +49,7 @@ describe('/api/user', () => {
     })
     const { req, res } = createMocks({ method: 'PUT', body })
     req.query = { id: otherUser.id }
-    await handle(req, res)
-    expect(res._getStatusCode()).toBe(405)
+    await handler(req, res)
+    expect(res._getStatusCode()).toBe(401)
   })
 })

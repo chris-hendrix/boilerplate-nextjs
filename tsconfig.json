@@ -25,6 +25,7 @@
     "@lib": ["lib"],
     "@pages": ["pages"],
     "@store": ["store"],
+    "@utils": ["utils"],
   },
   "include": ["next-env.d.ts", "next-auth.d.ts", "**/*.ts", "**/*.tsx"],
   "exclude": [
