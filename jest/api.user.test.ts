@@ -36,7 +36,7 @@ describe('/api/user', () => {
     const { req, res } = createMocks({ method: 'PUT', body })
     req.query = { id: otherUser.id }
     await handler(req, res)
-    expect(res._getStatusCode()).toBe(405)
+    expect(res._getStatusCode()).toBe(401)
   })
 
   test('cannot edit user while signed out', async () => {
@@ -50,6 +50,6 @@ describe('/api/user', () => {
     const { req, res } = createMocks({ method: 'PUT', body })
     req.query = { id: otherUser.id }
     await handler(req, res)
-    expect(res._getStatusCode()).toBe(405)
+    expect(res._getStatusCode()).toBe(401)
   })
 })
