@@ -22,13 +22,13 @@ const logRequest = (req: NextApiRequest) => {
   console.info('---')
   method && console.info(`Method: ${method}`)
   url && console.info(`Path:   ${url}`)
-  body && console.info(`Body:   ${body}`)
+  body && console.info(`Body:   ${JSON.stringify(body)}`)
   console.info('---')
 }
 
 const logError = (error: any) => {
   if (process.env.NODE_ENV === 'test') return
-  console.info(`Error:  ${error}`)
+  console.info(`Error:  ${JSON.stringify(error)}`)
   console.info('---')
 }
 
