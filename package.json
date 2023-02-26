@@ -8,7 +8,7 @@
     "start": "next start",
     "lint": "next lint",
     "jest": "NODE_ENV=test jest --config=jest/jest.config.ts --runInBand --forceExit",
-    "migrate": "npx prisma migrate dev",
+    "migrate": "npx prisma migrate dev --skip-seed",
     "dev:migrate": "npm run migrate && npm run dev",
     "migrate:local": "docker exec -it app npm run migrate",
     "seed:local": "docker exec -it app npx prisma db seed",

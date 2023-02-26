@@ -5,7 +5,7 @@ import { ApiError, apiHandler, withSessionUser } from '@/utils/api'
 
 export const config = { api: { bodyParser: false } }
 
-const handle = apiHandler(async (
+const handler = apiHandler(async (
   req: NextApiRequest,
   res: NextApiResponse<{ path: string } | string | Blob>,
 ) => {
@@ -43,4 +43,4 @@ const handle = apiHandler(async (
   return res.status(400).json('Invalid request')
 })
 
-export default handle
+export default handler

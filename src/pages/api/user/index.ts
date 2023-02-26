@@ -8,17 +8,27 @@ const handler = apiHandler(async (
   req: NextApiRequest,
   res: NextApiResponse<User | User[] | string>
 ) => {
-  let result = null
+  // GET users
+  if (req.method === 'GET') {
+    const { skip, take } = req.query
+    const users = await prisma.user.findMany({
+      skip: skip && take ? Number(skip) : undefined,
+      take: skip && take ? Number(take) : undefined,
+    })
+    return res.status(200).json(users)
+  }
+  // POST user
   if (req.method === 'POST') {
     const { email, password } = req.body
     if (await prisma.user.findUnique({ where: { email } })) {
       throw new ApiError('Email exists', 400)
     }
     const hash = await generateHash(password)
-    result = await prisma.user.create({ data: { email, password: hash } })
+    const user = await prisma.user.create({ data: { email, password: hash } })
+    return res.status(201).json(user)
   }
 
-  return res.status(result ? 200 : 400).json(result || 'Invalid request')
+  throw new ApiError('Invalid request', 400)
 })
 
 export default handler
