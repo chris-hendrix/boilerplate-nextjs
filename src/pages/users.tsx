@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { GetStaticProps } from 'next'
 import Router from 'next/router'
 import { User } from '@prisma/client'
@@ -27,13 +27,18 @@ type Props = {
 }
 const UsersPage: React.FC<Props> = ({ initialUsers }) => {
   const [users, setUsers] = useState(initialUsers)
+  const [skip, setSkip] = useState(0)
   const { data: session } = useGetSessionQuery()
-  const { refetch, isError } = useGetUsersQuery({
-    skip: users.length,
-    take: PAGE_SIZE,
-  })
+  const { refetch, isError } = useGetUsersQuery({ skip, take: PAGE_SIZE })
+
+  useEffect(() => {
+    // loads initialUsers into state when skip === 0
+    loadMoreUsers()
+  }, [skip])
 
   const loadMoreUsers = async () => {
+    // no need to refetch initialUsers
+    if (skip === 0) return
     const { data } = await refetch()
     setUsers([...users, ...(data || [])])
   }
@@ -56,7 +61,7 @@ const UsersPage: React.FC<Props> = ({ initialUsers }) => {
             </CardActionArea>
           </Card>
         ))}
-        <Button onClick={() => loadMoreUsers()}>Load more</Button>
+        <Button onClick={() => setSkip(users.length + PAGE_SIZE)}>Load more</Button>
       </Stack>
     </Layout>
   )
