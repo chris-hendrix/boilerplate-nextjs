@@ -27,11 +27,9 @@ const UserAvatar: React.FC<Props> = ({ userId, ...rest }) => {
   }, [isUserLoading, user?.bucketImage])
 
   if (!user || isLoading) return null
+  const imageUrl = bucketImageUrl || user?.image || '/avatar.png'
 
-  const { name, image } = user
-  const imageUrl = bucketImageUrl || image
-
-  return imageUrl ? <Avatar src={imageUrl} {...rest} /> : <Avatar {...rest}>{name?.charAt(0) || ''}</Avatar>
+  return <Avatar src={imageUrl} {...rest} />
 }
 
 export default UserAvatar

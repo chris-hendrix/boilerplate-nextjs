@@ -1,7 +1,19 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, ReactNode } from 'react'
 import Router from 'next/router'
 import { useForm } from 'react-hook-form'
-import { Box, Button, Chip, IconButton, Stack, Typography } from '@mui/material'
+import {
+  Box,
+  Button,
+  Chip,
+  IconButton,
+  List,
+  ListItem,
+  ListItemText,
+  ListItemIcon,
+  Stack,
+  Typography
+} from '@mui/material'
+import { Abc, Email } from '@mui/icons-material'
 import {
   useUpdateUserMutation,
   useUploadFileMutation,
@@ -62,11 +74,35 @@ const UserProfile: React.FC<Props> = ({ userId, ...rest }) => {
   const canEdit = session?.user?.id === user.id
   const isLoading = isUpdating || isFileUploading
 
+  const renderInfo = () => {
+    const renderListItem = (icon: ReactNode, text: string) => (
+      <ListItem>
+        <ListItemIcon>{icon}</ListItemIcon>
+        <ListItemText primary={text} />
+      </ListItem>
+    )
+
+    if (canEdit) {
+      return (
+        <>
+          <TextInput name="name" form={form} disabled={!edit} />
+          <TextInput name="email" form={form} disabled={!edit} />
+        </>
+      )
+    }
+    return (
+      <List disablePadding>
+        {renderListItem(<Abc />, user.name || '')}
+        {renderListItem(<Email />, user.email)}
+      </List>
+    )
+  }
+
   return (
     <Box {...rest}>
       <SnackbarAlert {...getAlertProps()} />
       <Stack
-        width="400px"
+        width="100%x"
         spacing={2}
         alignItems="center"
         component="form"
@@ -93,8 +129,7 @@ const UserProfile: React.FC<Props> = ({ userId, ...rest }) => {
           {user.admin && <Chip label="Admin" component="div" />}
           <Chip label={String(user.createdAt)} />
         </Box>
-        {canEdit && <TextInput name="name" form={form} disabled={!edit} />}
-        {canEdit && <TextInput name="email" form={form} disabled={!edit} />}
+        {renderInfo()}
         <Box>
           <Button
             onClick={() => Router.push('/users')}
@@ -112,9 +147,7 @@ const UserProfile: React.FC<Props> = ({ userId, ...rest }) => {
             {edit ? 'Save' : 'Edit'}
           </Button>}
         </Box>
-
       </Stack>
-
     </Box>
   )
 }

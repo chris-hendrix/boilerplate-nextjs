@@ -10,6 +10,16 @@ export const userApi = createApi({
       query: (id) => `user/${id}`,
       providesTags: (_result, _err, id) => [{ type: 'User', id }],
     }),
+    getUsers: build.query<User[], { skip: number, take: number } | undefined>({
+      query: (params) => ({
+        url: 'user',
+        params
+      }),
+      providesTags: (result) => [
+        ...(result || []).map(({ id }) => ({ type: 'User' as const, id })),
+        { type: 'User', id: 'LIST' }
+      ]
+    }),
     addUser: build.mutation<User, Partial<User>>({
       query: (body) => ({
         url: 'user',
@@ -28,4 +38,9 @@ export const userApi = createApi({
   })
 })
 
-export const { useGetUserQuery, useAddUserMutation, useUpdateUserMutation } = userApi
+export const {
+  useGetUsersQuery,
+  useGetUserQuery,
+  useAddUserMutation,
+  useUpdateUserMutation
+} = userApi
